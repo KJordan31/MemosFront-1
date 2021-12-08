@@ -1,86 +1,22 @@
 <template>
-<h1 class="h3 mb-3"><strong>Bandeja</strong> Entrada</h1>
+
 
 <div class="container bootdey">
-    <div class="email-app mb-4">
-        <nav>
-            <a href="Nuevo-correo.html" class="btn btn-danger btn-block">Crear Correo</a>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-inbox"></i> Recibidos<span
-                            class="badge badge-danger">4</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-star"></i> Destacados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-rocket"></i> Enviados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-trash-o"></i> Eliminados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-bookmark"></i> Borradores</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-inbox"></i> Inbox <span
-                            class="badge badge-danger">4</span></a>
-                </li>
-            </ul>
-        </nav>
+    <div class="email-app mb-4"> 
+             
+
         <main class="inbox">
+                    <router-view />
             <div class="toolbar">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-envelope"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-star"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-star-o"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-bookmark-o"></span>
-                    </button>
+                    
+                   <h1 class="h3 mb-3"><strong>Bandeja</strong> Entrada</h1>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-mail-reply"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-mail-reply-all"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-mail-forward"></span>
-                    </button>
-                </div>
-                <button type="button" class="btn btn-light">
-                    <span class="fa fa-trash-o"></span>
-                </button>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
-                        <span class="fa fa-tags"></span>
-                        <span class="caret"></span>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">add label <span class="badge badge-danger"> Home</span></a>
-                        <a class="dropdown-item" href="#">add label <span class="badge badge-info"> Job</span></a>
-                        <a class="dropdown-item" href="#">add label <span class="badge badge-success">
-                                Clients</span></a>
-                        <a class="dropdown-item" href="#">add label <span class="badge badge-warning"> News</span></a>
-                    </div>
-                </div>
-                <div class="btn-group float-right">
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-chevron-left"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-chevron-right"></span>
-                    </button>
-                </div>
+               
+                
             </div>
 
+   
             <ul class="messages">
                 <li class="message unread">
                     <a href="#">

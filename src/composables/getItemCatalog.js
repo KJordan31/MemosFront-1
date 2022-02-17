@@ -7,7 +7,7 @@ const getItem = (catalogo,id) =>{
     
     const load = async () => {
         try {
-            const request = await fetch(`https://localhost:5001/api/${catalogo}/${id}`)
+            const request = await fetch(`https://localhost:5001/Api/${catalogo}/${id}`)
     
             if (!request.ok) {
                 throw Error('Ese elemento no existe');

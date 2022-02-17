@@ -57,6 +57,7 @@ import Modal from '../Modal.vue'
 import getItem from '../../composables/getItemCatalog'
 
 
+
 export default {
     props : ['title', 'data'],
     components:{
@@ -104,7 +105,7 @@ export default {
       async agregarItem() {
         let newItem = {
           descripcion: this.itemPorAgregar,
-          usuario: 'esoriano'
+          usuario: 'khenriquez'
         }
         try {
           const request = await fetch(`https://localhost:5001/api/${this.title}`, {
@@ -117,6 +118,9 @@ export default {
 
           if (request.ok) {
             this.$emit('update');
+            this.newItem = {
+              descripcion: "",
+            }
           }
         } catch (error) {
           console.log(error);

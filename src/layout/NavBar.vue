@@ -38,7 +38,7 @@
 	                            <img src="../../public/assets/img/avatars/avatar-6.png" class="avatar img-fluid rounded me-1"
 	                                alt="Charles Hall" /> <span class="text-dark">Kenneth Henriquez</span>
 	                        </a>
-	                        <div class="dropdown-menu dropdown-menu-end">
+	                        <!-- <div class="dropdown-menu dropdown-menu-end">
 	                            <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
 	                                    data-feather="user"></i> Perfil</a>
 
@@ -52,7 +52,7 @@
 						
 
 							
-	                        </div>
+	                        </div> -->
 	                    </li>
 	                </ul>
 	            </div>

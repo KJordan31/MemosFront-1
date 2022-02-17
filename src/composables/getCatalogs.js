@@ -7,7 +7,7 @@ const getCatalogs = () =>{
     
     const load = async (catalogo) => {
         try {
-            const request = await fetch(`https://localhost:5001/api/${catalogo}`)
+            const request = await fetch(`https://localhost:5001/Api/${catalogo}`)
     
             if (!request.ok) {
                 throw Error('no data avaible');

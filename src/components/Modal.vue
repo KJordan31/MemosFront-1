@@ -55,6 +55,7 @@
 <script>
 import {ref} from 'vue'
 
+
 export default {
     props:['idItem'],
     setup(props, {emit}){

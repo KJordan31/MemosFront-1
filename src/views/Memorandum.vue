@@ -1,5 +1,4 @@
 <template>
-
 <div class="">
     
 <div class="email-app">
@@ -7,7 +6,7 @@
     <main>
         <p class="text-center"></p>
         
-        <h1 class="h3 mb-3"><strong>Nuevo</strong> Correo</h1>
+        <h1 class="h3 mb-3"><strong>Nuevo</strong> Memorandum</h1>
         <form>
             <div class="form-row mb-3">
                 <label for="to" class="col-2 col-sm-1 col-form-label">De:</label>
@@ -116,6 +115,8 @@
 </div>
 </div>
 </template>
+  
+
 
 <script>
 export default {
@@ -123,3 +124,6 @@ export default {
 }
 </script>
 
+<style>
+
+</style>

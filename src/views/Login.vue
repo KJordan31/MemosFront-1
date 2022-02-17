@@ -1,329 +1,201 @@
 <template>
-<div class="wrapper fadeInDown">
-  <div id="formContent">
-    <!-- Tabs Titles -->
+  <div class="container">
+    <div class="login-container">
+      <div id="output"></div>
 
-    <!-- Icon -->
-    <div class="fadeIn first">
-      <img src="@/assets/avatar-7.jpg" id="icon" alt="User Icon"  class="img-fluid rounded-circle" />
+      <img
+        src="../../public/assets/img/avatars/ihtt.png"
+        id="icon"
+        alt=""
+        width="300"
+        height="100"
+        class=""
+      />
+
+      <div class="form-box">
+        <form action="" method="">
+          <input name="User" type="text" placeholder="Username" />
+          <input type="password" placeholder="Password" />
+          <button class="btn btn-primary btn-block login" type="submit">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
-
-    <!-- Login Form -->
-    <form v-on:submit.prevent="login">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="Usuario" v-model="usuario">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="Contraseña" v-model="password">
-      <input type="submit" class="fadeIn fourth" value="Log In" >
-    </form>
-
-    <!-- Remind Passowrd -->
-			<div class="alert alert-danger" role="alert" v-if="error">
-			{{error_msg}}
-			</div>
   </div>
-</div>
-  
 </template>
 
 <script>
 import axios from "axios";
 export default {
-	name: "Login",
-	components: {
-
-	},
-	data(){
-		return{
-			usuario: "Kenneth",
-			password: "3112",
-			error: false,
-			error_msg: ","
-		}
-	},
-	methods:{
-		login(){
-			let json = {
-				"usuario" : this.usuario,
-				"password" : this.password
-			};
-			axios.post("http://solodata.es/auth", json)
-      .then( data =>{
-				if(data.data.status == "ok"){
-                    localStorage.token = data.data.result.token;
-                    this.$router.push("inicio");
-				}else{
-					this.error = true;
-					this.error_msg = data.data.result.error_msg;
-				}
-			})
-		}
-	}
-
-}
+  name: "Login",
+  components: {},
+  data() {
+    return {
+      usuario: "Kenneth",
+      password: "3112",
+      error: false,
+      error_msg: ",",
+    };
+  },
+  methods: {
+    login() {
+      let json = {
+        usuario: this.usuario,
+        password: this.password,
+      };
+      axios.post("http://solodata.es/auth", json).then((data) => {
+        if (data.data.status == "ok") {
+          localStorage.token = data.data.result.token;
+          this.$router.push("inicio");
+        } else {
+          this.error = true;
+          this.error_msg = data.data.result.error_msg;
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-
-/* BASIC */
-
-html {
-  background-color: #56baed;
-}
-
 body {
-  font-family: "Poppins", sans-serif;
-  height: 100vh;
+  background: #eee url("https://w.wallhaven.cc/full/k7/wallhaven-k7v9yq.png");
 }
-
-a {
-  color: #92badd;
-  display:inline-block;
-  text-decoration: none;
-  font-weight: 400;
-}
-
-h2 {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  display:inline-block;
-  margin: 40px 8px 10px 8px; 
-  color: #cccccc;
-}
-
-
-
-/* STRUCTURE */
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column; 
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
-  padding: 20px;
-}
-
-#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
+html,
+body {
   position: relative;
-  padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  height: 100%;
+}
+
+.login-container {
+  position: relative;
+  width: 400px;
+  margin: 80px auto;
+  padding: 20px 40px 40px;
   text-align: center;
+  background: #fff;
+  border: 1px solid #ccc;
 }
 
-#formFooter {
-  background-color: #f6f6f6;
-  border-top: 1px solid #dce8f1;
-  padding: 25px;
+#output {
+  position: absolute;
+  width: 300px;
+  top: -75px;
+  left: 0;
+  color: #fff;
+}
+
+#output.alert-success {
+  background: rgb(25, 204, 25);
+}
+
+#output.alert-danger {
+  background: rgb(228, 105, 105);
+}
+
+.login-container::before,
+.login-container::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 3.5px;
+  left: 0;
+  background: #fff;
+  z-index: -1;
+  -webkit-transform: rotateZ(4deg);
+  -moz-transform: rotateZ(4deg);
+  -ms-transform: rotateZ(4deg);
+  border: 1px solid #ccc;
+}
+
+.login-container::after {
+  top: 5px;
+  z-index: -2;
+  -webkit-transform: rotateZ(-2deg);
+  -moz-transform: rotateZ(-2deg);
+  -ms-transform: rotateZ(-2deg);
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  margin: 10px auto 30px;
+  border-radius: 100%;
+  border: 2px solid #aaa;
+  background-size: cover;
+}
+
+.form-box input {
+  width: 100%;
+  padding: 10px;
   text-align: center;
-  -webkit-border-radius: 0 0 10px 10px;
-  border-radius: 0 0 10px 10px;
+  height: 40px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  transition: 0.2s ease-in-out;
 }
 
-
-
-/* TABS */
-
-h2.inactive {
-  color: #cccccc;
+.form-box input:focus {
+  outline: 0;
+  background: #eee;
 }
 
-h2.active {
-  color: #0d0d0d;
-  border-bottom: 2px solid #5fbae9;
+.form-box input[type="text"] {
+  border-radius: 5px 5px 0 0;
+  text-transform: lowercase;
 }
 
-
-
-/* FORM TYPOGRAPHY*/
-
-input[type=button], input[type=submit], input[type=reset]  {
-  background-color: #56baed;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  -webkit-box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  margin: 5px 20px 40px 20px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
+.form-box input[type="password"] {
+  border-radius: 0 0 5px 5px;
+  border-top: 0;
 }
 
-input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-  background-color: #39ace7;
+.form-box button.login {
+  margin-top: 15px;
+  padding: 10px 20px;
 }
 
-input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
-  -moz-transform: scale(0.95);
-  -webkit-transform: scale(0.95);
-  -o-transform: scale(0.95);
-  -ms-transform: scale(0.95);
-  transform: scale(0.95);
-}
-
-input[type=text] {
-  background-color: #f6f6f6;
-  border: none;
-  color: #0d0d0d;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 5px;
-  width: 85%;
-  border: 2px solid #f6f6f6;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-}
-
-input[type=text]:focus {
-  background-color: #fff;
-  border-bottom: 2px solid #5fbae9;
-}
-
-input[type=text]:placeholder {
-  color: #cccccc;
-}
-
-
-
-/* ANIMATIONS */
-
-/* Simple CSS3 Fade-in-down Animation */
-.fadeInDown {
-  -webkit-animation-name: fadeInDown;
-  animation-name: fadeInDown;
+.animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
 
-@-webkit-keyframes fadeInDown {
+@-webkit-keyframes fadeInUp {
   0% {
     opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
-    -webkit-transform: none;
-    transform: none;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
   }
 }
 
-@keyframes fadeInDown {
+@keyframes fadeInUp {
   0% {
     opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
+    -webkit-transform: translateY(20px);
+    -ms-transform: translateY(20px);
+    transform: translateY(20px);
   }
+
   100% {
     opacity: 1;
-    -webkit-transform: none;
-    transform: none;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
   }
 }
 
-/* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-
-.fadeIn {
-  opacity:0;
-  -webkit-animation:fadeIn ease-in 1;
-  -moz-animation:fadeIn ease-in 1;
-  animation:fadeIn ease-in 1;
-
-  -webkit-animation-fill-mode:forwards;
-  -moz-animation-fill-mode:forwards;
-  animation-fill-mode:forwards;
-
-  -webkit-animation-duration:1s;
-  -moz-animation-duration:1s;
-  animation-duration:1s;
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
 }
-
-.fadeIn.first {
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-
-.fadeIn.second {
-  -webkit-animation-delay: 0.6s;
-  -moz-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
-
-.fadeIn.third {
-  -webkit-animation-delay: 0.8s;
-  -moz-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
-
-.fadeIn.fourth {
-  -webkit-animation-delay: 1s;
-  -moz-animation-delay: 1s;
-  animation-delay: 1s;
-}
-
-/* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
-
-.underlineHover:hover {
-  color: #0d0d0d;
-}
-
-.underlineHover:hover:after{
-  width: 100%;
-}
-
-
-
-/* OTHERS */
-
-*:focus {
-    outline: none;
-} 
-
-#icon {
-  width:60%;
-}
-
 </style>
-

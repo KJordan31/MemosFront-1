@@ -73,10 +73,19 @@ export default {
  data(){
      return{        
           password: '',
-      repeatPassword: '',
-         showpassword: false
+         repeatPassword: '',
+         showpassword: false,
+         usuarios:{
+           "usuarios" : " ",
+           "contraseña" : "",
+         }
      }
  },
+
+mounted(){
+
+},
+
   validations: {
     password: {
       required,

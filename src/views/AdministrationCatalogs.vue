@@ -8,7 +8,7 @@
         <option value="0" selected>Seleccione el Catalogo</option>
         <option value="Accion">Acciones</option>
         <option value="Estado">Estados</option>
-        <option value="TipoMemorandum">Tipo de Memos</option>
+        <option value="TipoMemorandum">Tipo de Memorandum</option>
         <option value="TipoDestinatario">Tipo de Destinatario</option>
       </select>
       <hr />

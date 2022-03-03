@@ -39,6 +39,11 @@ const routes = [
             path: 'entrada',
             name: 'Bandeja',
             component: () => import( '../views/Bandeja.vue'),
+          },
+          {
+            path: 'correo',
+            name: 'Correo',
+            component: () => import( '../views/Correo.vue'),
           }
         ]
       },
@@ -52,6 +57,7 @@ const routes = [
         name: 'Memorandum',
         component: () => import(/* webpackChunkName: "Configuration" */ '../views/Memorandum.vue')
       },
+      
       {
         path: '/buscar',
         name: 'Buscar',

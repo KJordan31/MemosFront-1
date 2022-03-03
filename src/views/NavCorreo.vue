@@ -4,7 +4,7 @@
 
 <h1 class="display-4">Memorandum</h1>
     <div class="container-fluid">
-        <router-link to="/bandeja/nuevo" class="btn btn-primary btn-block">Redactar</router-link>
+        <router-link to="/bandeja/nuevo" class="btn btn-outline-primary btn-block">Redactar</router-link>
             <ul class="nav">
                 <li class="nav-item">
                     <router-link class="nav-link" to="/bandeja/entrada"><i class="fa fa-inbox"></i> Recibidos<span

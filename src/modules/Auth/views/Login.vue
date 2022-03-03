@@ -21,21 +21,23 @@
                     <div class="container">
                       <div class="mb-3">
                         <br />
-                        <label class="form-label">Correo</label>
+                      </div>
+                      <div class="form-floating mb-3">
                         <input
-                          class="form-control form-control-lg"
                           type="correo"
-                          name="correo"
+                          class="form-control"
+                          id="floatingUsuario"
+                          placeholder="Usuario"
                           required
-                          placeholder="Ingrese Correo"
-                          v-model="login_form.email"
+                          v-model="correo"
                         />
+                        <label for="floatingInput">Usuario</label>
                       </div>
                     </div>
                     <div class="container">
                       <div class="mb-3">
-                        <label for="floatingInput">Contraseña</label>
-                        <input
+                        <label for="floatingInput"></label>
+                        <!-- <input
                           class="form-control form-control-lg"
                           :type="show == true ? 'text' : 'password'"
                           id="floatingPassword"
@@ -43,17 +45,8 @@
                           placeholder="Ingrese Contraseña"
                           v-model="login_form.password"
                           :maxlength="20"
-                        />
-                        <i
-                          class="fas fa-eye show-icon"
-                          v-if="show"
-                          @click="show = !show"
-                        ></i>
-                        <i
-                          class="fas fa-eye-slash hide-icon"
-                          v-else
-                          @click="show = !show"
-                        ></i>
+                        /> -->
+
                         <div class="form-floating mb-3">
                           <input
                             :type="show == true ? 'text' : 'password'"
@@ -61,9 +54,22 @@
                             id="floatingPassword"
                             placeholder="Password"
                             required
-                            v-model="login_form.password"
+                            v-model="contraseña"
                             :maxlength="20"
+                            autocomplete="off"
                           />
+                          <div class="strength mb-1">
+                            <i
+                              class="fas fa-eye show-icon"
+                              v-if="show"
+                              @click="show = !show"
+                            ></i>
+                            <i
+                              class="fas fa-eye-slash hide-icon"
+                              v-else
+                              @click="show = !show"
+                            ></i>
+                          </div>
 
                           <label for="floatingInput">Contraseña</label>
                         </div>
@@ -89,11 +95,18 @@
                         
                         <button type="submit"  class="btn btn-lg btn-primary" >Ingresar</button>
                       </router-link> -->
-                      <input
+                        <div class="mt-3">
+                        <div class="alert alert-danger" role="alert" v-show="error"
+                        >{{error_msg}}</div
+                      >
+                      </div>
+                      <button
+                        @click="login"
                         type="submit"
                         class="btn btn-lg btn-primary"
-                        value="Login"
-                      />
+                      >
+                        login
+                      </button>                      
                     </div>
                   </form>
                 </div>
@@ -108,29 +121,74 @@
 
 <script>
 import axios from "axios";
+
 import { ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
-  data: () => {
+  name: "Login",
+  data() {
     return {
-      password: "",
+      correo: "",
+      contraseña: "",
+      nombre: "",
+      apellidos: "",
       show: false,
+      error: false,
+      error_msg: "Usuario y/o Contraseñas INCORRECTAS ",
+      usuario: [],
     };
   },
-  setup() {
-    const login_form = ref({});
-    const store = useStore();
 
-    const login = () => {
-      store.dispatch("login", login_form.value);
-    };
+  methods: {
+    async login() {
+      let json = {
+        correo: this.correo,
+        contraseña: this.contraseña,
+        nombre: this.nombre,
+        apellidos: this.apellidos,
+      };
+      const response = await axios
+        .post(`https://localhost:5001/api/usuario/login`, json)
+        .then((data) => {
+          if (data.status == 200) {
+            localStorage.setItem("user-info",JSON.stringify(data));
+            this.$router.push("/");
+          } else {
+            this.error = true;           
+          }
+        });
+    },
+ 
 
-    return {
-      login_form,
-      login,
-    };
+    mounted() {
+      this.getLogin();
+      let user = localStorage.getItem("user-info");
+      if (user) {
+        this.$router.push("/");
+      }
+    },
   },
+
+  //   data: () => {
+  //     return {
+  //       password: "",
+  //       show: false,
+  //     };
+  //   },
+  //   setup() {
+  //     const login_form = ref({});
+  //     const store = useStore();
+
+  //     const login = () => {
+  //       store.dispatch("login", login_form.value);
+  //     };
+
+  //     return {
+  //       login_form,
+  //       login,
+  //     };
+  //   },
 };
 
 // export default {
@@ -138,8 +196,9 @@ export default {
 //     const login_form = ref({
 //       email: "",
 //       password: "",
+//       show: false,
 //     });
-//     const register_form = ref({});
+
 //     const store = useStore();
 
 //     const url = "https://satt.transporte.gob.hn/api_login.php";
@@ -166,6 +225,7 @@ export default {
 //         if (response[0].result !== -1) {
 //           //usar router push para mandar a la bandeja.
 //           console.log("se logueo con exito redireccionar");
+//           this.$router.push("/");
 //         }
 //       } catch (error) {
 //         console.log(error);
@@ -174,11 +234,9 @@ export default {
 
 //     return {
 //       login_form,
-//       register_form,
 //       doLogin,
 //     };
 //   },
-
 // };
 </script>
 
@@ -186,6 +244,19 @@ export default {
 @import url("https://use.fontawesome.com/releases/v5.7.2/css/all.css");
 body {
   background-color: darkslategrey;
+}
+
+.strength {
+  position: absolute;
+  bottom: -20px;
+  left: 100;
+  right: 0;
+  display: block;
+  width: 25%;
+  height: 100%;
+
+  overflow: hidden;
+  z-index: 9;
 }
 
 @mixin showpass($property) {
@@ -197,11 +268,13 @@ body {
 }
 
 .show-icon {
-  @include showpass(20px);
+  position: relative;
+  left: 55px;
 }
 
 .hide-icon {
-  @include showpass(20px);
-  color: #555;
+  position: relative;
+  left: 55px;
+  color: #9e9fa4;
 }
 </style>

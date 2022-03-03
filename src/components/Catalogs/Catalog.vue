@@ -17,7 +17,7 @@
             <div v-if="agregar" class="col-md-6">
               <br>
               <div class="input-group mb-1">
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Agregar elemento al catálogo" aria-describedby="btnAgregarItem" v-model="itemPorAgregar" autocomplete="off">
+                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Agregar elemento al catálogo" aria-describedby="btnAgregarItem" v-model="itemPorAgregar" autocomplete="off" @keyup.enter="agregarItem">
                 <button class="btn btn-outline-info mb-0" type="button" id="btnAgregarItem" @click="agregarItem">
                   <span class="btn-inner--icon"><i class="fas fa-plus-circle"></i></span>
                 </button>                
@@ -55,6 +55,9 @@
 import Item from './Item.vue'
 import Modal from '../Modal.vue'
 import getItem from '../../composables/getItemCatalog'
+import bootstrap from "bootstrap"
+
+
 
 
 
@@ -86,6 +89,8 @@ export default {
     methods:{
       AbrirModal(id){
          let modal = new bootstrap.Modal(document.querySelector('#modal-form'));
+         $('#modal-form').modal('show')
+         
          
       
          const {load, error, item} =getItem(this.title,id)
@@ -121,6 +126,7 @@ export default {
             this.newItem = {
               descripcion: "",
             }
+            this.itemPorAgregar = "";
           }
         } catch (error) {
           console.log(error);

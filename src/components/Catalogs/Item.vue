@@ -12,9 +12,16 @@
             <p class="text-sm font-weight-bold mb-0">{{item.descripcion}}</p>
         </td>
         <td>
-            <span :class="[item.activo ? 'p-3 mb-2 bg-success bg-gradient text-white': 'p-3 mb-2 bg-danger bg-gradient text-white', 'badge badge-sm' ]">
-                {{item.activo ? 'Activo': 'Inactivo'}}
-            </span>
+            <span
+                  :class="[
+                    item.enUso
+                      ? 'p-3 mb-2 bg-success bg-gradient text-white'
+                      : 'p-3 mb-2 bg-danger bg-gradient text-white',
+                    'badge badge-sm',
+                  ]"
+                >
+                {{ item.enUso ? "Activo" : "Inactivo" }}
+                </span>
         </td>
         <td class="align-middle text-center">
             <button @click="open(item.id)" class="btn btn-outline-dark" type="button">
@@ -26,6 +33,8 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap"
+
 export default {
     name: "Item",
     props: ['item'],

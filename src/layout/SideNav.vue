@@ -34,6 +34,12 @@
             <span class="align-middle">Configuración</span>
           </router-link>
         </li>
+        <li class="sidebar-item">
+          <router-link class="sidebar-link" to="/login">
+           <i class="fas fa-sign-out-alt"></i>
+            <span class="align-middle">Salir</span>
+          </router-link>
+        </li>
 
         <li class="sidebar-header">Administración</li>
 

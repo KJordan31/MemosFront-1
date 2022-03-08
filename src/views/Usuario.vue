@@ -9,18 +9,18 @@
           type="search"
           class="form-control mr-sm-2 buscador"
           placeholder="Buscar Usuario"
-          @keyup.enter="search"
-          v-model="search"
+          @keyup.enter="searchName"
+          v-model="nombre"
         />
         <span class="input-group-btn">
-          <button class="btn btn-primary" type="button" @click="searchData">
+          <button class="btn btn-primary" type="button" @click="searchName()">
             <i class="fa fa-search"></i>
           </button>
         </span>
       </div>
     </form>
     <!-- END SEARCH INPUT -->
-    <div v-show="!Object.keys(search).length">
+    <div v-show="!Object.keys(nombre).length">
       <div class="padding"></div>
       <hr />
       <button
@@ -238,9 +238,11 @@
                 </td>
                 <td class="align-middle text-center">
                   <button
-                    @click="showModal(item)"
+                    @click="modificarUsuario(usuario)"
                     class="btn btn-outline-dark"
                     type="button"
+                    data-toggle="modal"
+                    data-target="#myModal"
                   >
                     <span class="btn-inner--icon"
                       ><i class="fas fa-edit"></i
@@ -249,119 +251,6 @@
                   </button>
                 </td>
                 <!-- MODAL -->
-                <div
-                  class="modal fade"
-                  id="modal-form"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="modal-form"
-                  aria-hidden="true"
-                >
-                  <div
-                    class="modal-dialog modal-dialog-centered modal-sm"
-                    role="document"
-                  >
-                    <div class="modal-content">
-                      <div class="modal-body p-0">
-                        <div class="card card-plain">
-                          <div class="card-header pb-0 text-left">
-                            <h3
-                              class="font-weight-bolder text-info text-gradient"
-                            >
-                              Edición
-                            </h3>
-                            <p class="mb-0">
-                              Modificacion de descripción o estado
-                            </p>
-                          </div>
-                          <div class="card-body">
-                            <form role="form text-left">
-                              <label>Descripción</label>
-                              <div class="input-group mb-3">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Descripción Elemento"
-                                  v-model="usuario.nombre"
-                                />
-                              </div>
-
-                              <div class="form-check form-switch">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  id="rememberMe"
-                                  v-model="usuario.super_Usuario"
-                                />
-                                <label class="form-check-label" for="rememberMe"
-                                  >Estado</label
-                                >
-                              </div>
-                              <div
-                                v-if="actualizado"
-                                class="
-                                  alert alert-success alert-dismissible
-                                  fade
-                                  show
-                                "
-                                role="alert"
-                              >
-                                <span class="alert-icon"
-                                  ><i class="ni ni-like-2"></i
-                                ></span>
-                                <span class="alert-text"
-                                  ><strong>Exito!</strong> Se realizó la
-                                  actualización</span
-                                >
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="alert"
-                                  aria-label="Close"
-                                >
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div v-if="!actualizado" class="text-center">
-                                <button
-                                  type="button"
-                                  @click="GuardarCambio(idItem)"
-                                  class="
-                                    btn btn-round
-                                    bg-gradient-info
-                                    btn-lg
-                                    w-100
-                                    mt-4
-                                    mb-0
-                                  "
-                                >
-                                  Guardar
-                                </button>
-                              </div>
-                              <div v-else class="text-center">
-                                <button
-                                  type="button"
-                                  @click="actualizado = !actualizado"
-                                  class="
-                                    btn btn-round
-                                    bg-gradient-danger
-                                    btn-lg
-                                    w-100
-                                    mt-4
-                                    mb-0
-                                  "
-                                  data-bs-dismiss="modal"
-                                >
-                                  Cerrar
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </tr>
             </tbody>
           </table>
@@ -369,7 +258,7 @@
       </div>
     </div>
 
-    <div v-show="Object.keys(search).length">
+    <div v-show="Object.keys(nombre).length">
       <div class="card-body px-0 pt-0 pb-2">
         <br />
         <h2>Resultados de Busqueda</h2>
@@ -450,7 +339,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="usuario in search.result" :key="usuario.Id">
+              <tr v-for="usuario in filtro" :key="usuario.Id">
                 <td>{{ usuario.id }}</td>
                 <td>{{ usuario.nombre }}</td>
                 <td>{{ usuario.apellidos }}</td>
@@ -470,9 +359,11 @@
                 </td>
                 <td class="align-middle text-center">
                   <button
-                    @click="showModal(item)"
+                    @click="modificarUsuario(usuario)"
                     class="btn btn-outline-dark"
                     type="button"
+                    data-toggle="modal"
+                    data-target="#myModal"
                   >
                     <span class="btn-inner--icon"
                       ><i class="fas fa-edit"></i
@@ -480,120 +371,6 @@
                     <span class="btn-inner--text"></span>
                   </button>
                 </td>
-                <!-- MODAL -->
-                <div
-                  class="modal fade"
-                  id="modal-form"
-                  tabindex="-1"
-                  role="dialog"
-                  aria-labelledby="modal-form"
-                  aria-hidden="true"
-                >
-                  <div
-                    class="modal-dialog modal-dialog-centered modal-sm"
-                    role="document"
-                  >
-                    <div class="modal-content">
-                      <div class="modal-body p-0">
-                        <div class="card card-plain">
-                          <div class="card-header pb-0 text-left">
-                            <h3
-                              class="font-weight-bolder text-info text-gradient"
-                            >
-                              Edición
-                            </h3>
-                            <p class="mb-0">
-                              Modificacion de descripción o estado
-                            </p>
-                          </div>
-                          <div class="card-body">
-                            <form role="form text-left">
-                              <label>Descripción</label>
-                              <div class="input-group mb-3">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Descripción Elemento"
-                                  v-model="usuario.nombre"
-                                />
-                              </div>
-
-                              <div class="form-check form-switch">
-                                <input
-                                  class="form-check-input"
-                                  type="checkbox"
-                                  id="rememberMe"
-                                  v-model="usuario.super_Usuario"
-                                />
-                                <label class="form-check-label" for="rememberMe"
-                                  >Estado</label
-                                >
-                              </div>
-                              <div
-                                v-if="actualizado"
-                                class="
-                                  alert alert-success alert-dismissible
-                                  fade
-                                  show
-                                "
-                                role="alert"
-                              >
-                                <span class="alert-icon"
-                                  ><i class="ni ni-like-2"></i
-                                ></span>
-                                <span class="alert-text"
-                                  ><strong>Exito!</strong> Se realizó la
-                                  actualización</span
-                                >
-                                <button
-                                  type="button"
-                                  class="btn-close"
-                                  data-bs-dismiss="alert"
-                                  aria-label="Close"
-                                >
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div v-if="!actualizado" class="text-center">
-                                <button
-                                  type="button"
-                                  @click="GuardarCambio(idItem)"
-                                  class="
-                                    btn btn-round
-                                    bg-gradient-info
-                                    btn-lg
-                                    w-100
-                                    mt-4
-                                    mb-0
-                                  "
-                                >
-                                  Guardar
-                                </button>
-                              </div>
-                              <div v-else class="text-center">
-                                <button
-                                  type="button"
-                                  @click="actualizado = !actualizado"
-                                  class="
-                                    btn btn-round
-                                    bg-gradient-danger
-                                    btn-lg
-                                    w-100
-                                    mt-4
-                                    mb-0
-                                  "
-                                  data-bs-dismiss="modal"
-                                >
-                                  Cerrar
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </tr>
             </tbody>
           </table>
@@ -607,46 +384,128 @@
 
     <!-- END PAGINATION -->
   </div>
+
+  <!-- MODAL -->
+
+  <div
+    v-if="actualizar"
+    class="modal-dialog modal-dialog-centered"
+    id="myModal"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="card card-plain">
+            <div class="card-header pb-0 text-left">
+              <h3 class="modal-title text-info text-gradient">Edición</h3>
+              <p class="mb-0">Modificacion de Usuario</p>
+            </div>
+            <div class="modal-body">
+              <form role="form text-left" @submit.prevent="Editar">
+                <label>Nombre</label>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Nombre"
+                    v-model="usuario.nombre"
+                  />
+                </div>
+                <label>Apellido</label>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Apellidos"
+                    v-model="usuario.apellidos"
+                  />
+                </div>
+                <label>Correo</label>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Correo"
+                    v-model="usuario.correo"
+                  />
+                </div>
+                <label>Contraseña</label>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Contraseña"
+                    v-model="usuario.contraseña"
+                  />
+                </div>
+
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="rememberMe"
+                    v-model="usuario.super_Usuario"
+                  />
+                  <label class="form-check-label" for="rememberMe">{{
+                    usuario.super_Usuario ? "Gerencia" : "Empleado"
+                  }}</label>
+                </div>
+                <div
+                  v-if="actualizado"
+                  class="alert alert-success alert-dismissible fade show"
+                  role="alert"
+                >
+                  <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                  <span class="alert-text"
+                    ><strong>Exito!</strong> Se realizó la actualización</span
+                  >
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div
+                  v-if="!actualizado"
+                  class="modal-footer justify-content-md-center"
+                >
+                  <button
+                    type="button"
+                    @click="Editar(usuario)"
+                    class="btn btn-outline-success"
+                    
+                  >
+                    Guardar
+                  </button>
+                  <button
+                    type="button"
+                    @click="actualizar = false"
+                    class="btn btn-outline-danger"
+                    data-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { ref } from "vue";
+import swal from "sweetalert";
 
 export default {
-  //Metodo para conexion con fetch a la Api
-  emits: ["update"],
-  props: ["idItem"],
-  setup(props, { emit }) {
-    const actualizado = ref(false);
-
-    const GuardarCambio = async (item) => {
-      const itemActualizado = { ...item.data };
-      const usuario = item.usuario;
-
-      try {
-        const request = await fetch(
-          `https://localhost:5001/api/usuario/${itemActualizado.id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(itemActualizado),
-          }
-        );
-
-        if (request.ok) {
-          actualizado.value = true;
-          emit("ActualizarDataCatalog", itemActualizado);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    return { GuardarCambio, actualizado };
-  },
-
+  props: ["idUsuario"],
   data() {
     return {
       usuarios: [],
@@ -656,32 +515,55 @@ export default {
       usuariosFiltrado: [],
       buscador: " ",
       setTimeoutBuscador: "",
-      showModal: false,
-      search: "",
+      nombre: "",
+      apellidos: "",
+      actualizar: false,
+      usuario: {},
+      editando: null,
     };
   },
 
-  computed: {
-    filtro: {
-      get() {
-        return this.texto;
-      },
-      set(value) {
-        console.log("filtro ejecutado!");
-        value = value.toLowerCase();
-        this.usuariosFiltrado = this.usuarios.filter(
-          (usuario) => usuario.texto.toLowerCase().indexOf(value) !== -1
-        );
-        this.texto = value;
-      },
-    },
+  // emits: ["update"],
+  // props: ["idItem", "data"],
+  // setup(props, { emit }) {
+  //   const actualizado = ref(false);
 
-    searchData() {
-      fetch(`https://localhost:5001/api/usuario/${id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          this.usuarios = data;
-        });
+  //   const GuardarCambio = async (item) => {
+  //     const itemActualizado = { ...item.data };
+  //     const usuario = item.usuario;
+
+  //     try {
+  //       const request = await fetch(
+  //         `https://localhost:5001/api/${usuario}/${itemActualizado.id}`,
+  //         {
+  //           method: "PUT",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify(itemActualizado),
+  //         }
+  //       );
+
+  //       if (request.ok) {
+  //         actualizado.value = true;
+  //         emit("ActualizarDataCatalog", itemActualizado);
+  //         $("#myModal").modal("hide");
+  //         swal("Bien!", "Usuario Modificado!", "success");
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   return { GuardarCambio, actualizado };
+  // },
+
+  computed: {
+    filtro() {
+      return this.usuarios.filter(
+        (item) => item.nombre.includes(this.nombre),
+        (item) => item.apellidos.includes(this.apellidos)
+      );
     },
   },
 
@@ -692,23 +574,59 @@ export default {
 
   methods: {
     getUsuarios() {
-      fetch("https://localhost:5001/api/usuario", {
-        params: {
-          buscador: this.buscador,
-        },
-      })
+      fetch("https://localhost:5001/api/usuario")
         .then((response) => response.json())
         .then((data) => {
-          this.usuarios = data;
+          this.usuariosFiltrado = this.usuarios = data;
         });
     },
-    onClickSearch() {
-      this.$emit("clickSearch", this.searchQuery);
+
+    
+     editarUsuario(usuario) {
+      this.usuarioEditado = Object.assign({}, usuario);
+      this.editando = usuario.id;
     },
-    onClickClearSearch() {
-      this.searchQuery = "";
-      this.$emit("clickClearSearch");
+
+    modificarUsuario(id) {
+      this.actualizar = true;
+      this.usuario = id;
+      console.log(this.usuario);
     },
+
+    search() {
+      if (inputName) {
+        this.usuarios = this.usuario.filter(
+          (usuario) => usuario.nombre == nombre
+        );
+        this.getUsuarios();
+      }
+    },
+
+
+    async Editar(usuario) {
+   
+  try {
+    const request = await fetch(`https://localhost:5001/api/usuario/${this.usuario.id}`, {
+      method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(usuario),
+          }
+        );
+
+        if (request.ok) {
+         
+          swal("Bien!", "Usuario Modificado!", "success");
+          emit("ActualizarUser", usuario);
+          // $("#myModal").modal("hide");
+          actualizar = false          
+        }
+      } catch (error) {
+        console.log(error);
+      }
+},
+
     async agregarItem() {
       console.log("object");
       let newItem = {
@@ -728,7 +646,8 @@ export default {
 
         if (request.ok) {
           this.$emit("update");
-          
+          swal("Excelente!", "Usuario Creado!", "success");
+
           this.itemPorAgregar = "";
         }
       } catch (error) {
@@ -736,7 +655,7 @@ export default {
       }
     },
 
-    mounted() {      
+    mounted() {
       this.searchQuery = this.settings.initialSearchQuery;
       this.onClickSearch();
     },
@@ -744,4 +663,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>

@@ -27,6 +27,7 @@
                 id="cc"
                 placeholder="Type email"
                 v-model="itemPorAgregar.destinatarioUsu"
+                required
               />
             </div>
           </div>
@@ -38,6 +39,7 @@
                 v-model="itemPorAgregar.id_tipo"
                 class="form-control"
                 id="selectTipo"
+                required
               >
                 <option value="0" selected></option>
                 <option
@@ -62,6 +64,7 @@
                 placeholder="Type subject"
                 autocomplete="off"
                 v-model="itemPorAgregar.asunto"
+                required
               />
             </div>
           </div>
@@ -147,6 +150,7 @@
                 rows="12"
                 placeholder="Click here to reply"
                 v-model="itemPorAgregar.contenido"
+                required
               ></textarea>
             </div>
             <br />
@@ -164,12 +168,12 @@
                 </span>
                 Enviar
               </button>
-              <button type="submit" class="btn btn-outline-danger">
+              <router-link type="submit" class="btn btn-outline-danger" to="/">
                 <span class="icon is-small">
                   <i class="fas fa-ban"></i>
                 </span>
                 Descartar
-              </button>
+              </router-link>
             </div>
           </div>
         </div>

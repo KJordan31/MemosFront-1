@@ -121,9 +121,11 @@
 
 <script>
 import axios from "axios";
+import swal from 'sweetalert';
 
 import { ref } from "vue";
 import { useStore } from "vuex";
+import { error } from 'jquery';
 
 export default {
   name: "Login",
@@ -142,6 +144,7 @@ export default {
 
   methods: {
     async login() {
+
       let json = {
         correo: this.correo,
         contraseña: this.contraseña,
@@ -159,6 +162,8 @@ export default {
           }
         });
     },
+
+  
  
 
     mounted() {

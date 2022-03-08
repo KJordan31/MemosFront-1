@@ -64,10 +64,11 @@
                 <!-- BEGIN SEARCH INPUT -->
                 <div class="input-group">
                   <input
-                    type="text"
-                    v-model="buscar"
+                    type="search"                   
                     class="form-control"
                     placeholder="Buscar"
+                    v-model="usuario"
+                    
                   />
                   <span class="input-group-btn">
                     <button class="btn btn-primary" type="button">
@@ -86,7 +87,7 @@
                 </div>
 
                 <!-- BEGIN TABLE RESULT -->
-                <div class="responsive-table">
+                <div class="responsive-table" v-show="!Object.keys(usuario).length">
                   <table class="table table-hover">
                     <tbody>
                       <tr>
@@ -96,7 +97,7 @@
                         <th>Usuario</th>
                         <th>Adjuntos</th>
                       </tr>
-                      <tr v-for="memo in memos" :key="memo.codigo">
+                      <tr v-for="memo in datosPaginados" :key="memo" v-show="1">
                         <td>{{ memo.codigo }}</td>
                         <td>{{ memo.asunto }}</td>
                         <td>{{ memo.fecha }}</td>
@@ -108,27 +109,45 @@
                 </div>
                 <!-- END TABLE RESULT -->
 
+                <div class="responsive-table" v-show="Object.keys(usuario).length">
+                  <table class="table table-hover">
+                    <tbody>
+                      <tr>
+                        <th>Código</th>
+                        <th>Asunto</th>
+                        <th>Fecha</th>
+                        <th>Usuario</th>
+                        <th>Adjuntos</th>
+                      </tr>
+                      <tr v-for="memo in datosPaginados" :key="memo">
+                        <td>{{ memo.codigo }}</td>
+                        <td>{{ memo.asunto }}</td>
+                        <td>{{ memo.fecha }}</td>
+                        <td>{{ memo.usuario }}</td>
+                        <td><i class="fas fa-search-plus"></i></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
                 <!-- BEGIN PAGINATION -->
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination">
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
+                <nav aria-label="Page-navigation">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item" @click="getPreviousPage()">
+                      <a class="page-link">Anterior</a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">1</a>
+
+                    <li
+                      v-for="pagina in totalPaginas()"
+                      :key="pagina"
+                      @click="getDataPagina(pagina)"
+                      class="page-item"
+                      v-bind:class="isActive(pagina)"
+                    >
+                      <a class="page-link">{{ pagina }}</a>
                     </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
+                    <li class="page-item" @click="getNextPage()">
+                      <a class="page-link">Siguiente</a>
                     </li>
                   </ul>
                 </nav>
@@ -152,7 +171,10 @@
               <div class="align-self-center w-100">
                 <div class="py-3">
                   <div class="chart chart-xs">
-                    <canvas ref="VueCanvasDrawing" id="chartjs-dashboard-pie"></canvas>
+                    <canvas
+                      ref="VueCanvasDrawing"
+                      id="chartjs-dashboard-pie"
+                    ></canvas>
                   </div>
                 </div>
 
@@ -191,13 +213,13 @@
 
 <script>
 import DatePicker from "vue3-datepicker";
-import VueDrawingCanvas from 'vue-drawing-canvas';
+import VueDrawingCanvas from "vue-drawing-canvas";
 
 export default {
   name: "app",
   components: {
     DatePicker,
-    VueDrawingCanvas
+    VueDrawingCanvas,
   },
   data() {
     return {
@@ -205,21 +227,31 @@ export default {
 
       range: "",
 
-      buscar: " ",
+      usuario: " ",
 
       memos: [],
 
       tipos: [],
+
+      elementosPorPagina: 5,
+
+      datosPaginados: [],
+
+      PaginaActual: 1,
     };
   },
-  computed: {
-    items() {
-      return datos.filter((item) => {
-        return item.descripcion
-          .toLowerCase()
-          .includes(this.buscar.toLowerCase());
-      });
-    },
+
+    computed: {
+    filtro() {
+   return this.usuarios.filter((item) => item.nombre.includes(this.usuario));
+    }
+
+  },
+
+  mounted() {
+    this.getMemos();
+    this.getTipo();
+    this.getDataPagina(1);
   },
 
   methods: {
@@ -230,6 +262,46 @@ export default {
           this.memos = data;
         });
     },
+
+    totalPaginas() {
+      return Math.ceil(this.memos.length / this.elementosPorPagina);
+    },
+
+    getDataPagina(noPagina) {
+      this.PaginaActual = noPagina;
+      this.datosPaginados = [];
+      let ini = (noPagina = this.elementosPorPagina - this.elementosPorPagina);
+      let fin = (noPagina = this.elementosPorPagina);
+
+      this.datosPaginados = this.memos.slice(ini, fin);
+
+   
+    },
+
+    getPreviousPage() {
+      if (this.PaginaActual > 1) {
+        this.PaginaActual--;
+      }
+
+      this.getDataPagina(this.PaginaActual);
+    },
+
+    getNextPage() {
+      if (this.PaginaActual < this.totalPaginas()) {
+        this.PaginaActual++;
+      }
+
+      this.getDataPagina(this.PaginaActual);
+    },
+
+    isActive(noPagina) {
+      if (noPagina == this.PaginaActual) {
+        return "active";
+      } else {
+        return "";
+      }
+    },
+
     getTipo() {
       fetch("https://localhost:5001/api/tipomemorandum")
         .then((response) => response.json())
@@ -237,11 +309,6 @@ export default {
           this.tipos = data;
         });
     },
-  },
-
-  mounted() {
-    this.getMemos();
-    this.getTipo();
   },
 };
 </script>

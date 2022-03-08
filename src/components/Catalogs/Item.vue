@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { Modal } from "bootstrap"
+import  Modal  from "bootstrap"
 
 export default {
     name: "Item",

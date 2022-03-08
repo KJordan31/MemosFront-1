@@ -12,14 +12,10 @@
       <div class="panel panel-default">
         <div class="panel-heading">
         </div>
-        <div class="panel-body">        
-         
-         
+        <div class="panel-body">                
         </div>
       </div>
-
-      <div class="panel panel-default">
-        
+      <div class="panel panel-default">        
         <div class="panel-body">
         </div>
       </div>
@@ -28,6 +24,7 @@
         <div class="panel-heading">
         <h4 class="panel-title fst-italic">Seguridad</h4>
         </div>
+        <form ref="ConfigurationForm" v-on:submit="Modificar">
         <div class="panel-body">
           <div class="form-floating mb-3">
   <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
@@ -44,7 +41,7 @@
   <input type="password" class="form-control " id="floatingPassword" placeholder="Password" required>
   
   <label for="floatingPassword">Confirme Contraseña</label>
-</div>           
+</div>          
 
            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
               <button type="submit" class="btn btn-outline-success">
@@ -60,6 +57,7 @@
         
 
         </div>
+        </form>
       </div>
     </form>
   </div>
@@ -111,6 +109,11 @@ mounted(){
       this.showpassword = false
       show.type= "password"
     }
+  },
+
+  Modificar(event){
+    event.preventDefault();
+
   }
 }
 }

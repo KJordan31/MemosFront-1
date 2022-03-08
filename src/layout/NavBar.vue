@@ -46,7 +46,7 @@
                   class="avatar img-fluid rounded me-1"
                   alt="Charles Hall"
                 />
-                <em v-if="usuario">{{usuario.nombre}}</em>
+                <em v-show="usuario">{{usuario.nombre}}</em>
 
                 
               </b-nav-item-dropdown>
@@ -62,7 +62,7 @@
 export default {
   data() {
     return {
-     usuario: []
+     usuario:[]
       
     };
   },

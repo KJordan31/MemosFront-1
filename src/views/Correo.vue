@@ -7,7 +7,7 @@
           <h5 class="text-teal-700">
             {{usuario.nombre}}{{usuario.apellidos}} ({{ usuario.correo }}) {{memo.fecha}}
           </h5>
-          <h8 class="text-teal-700">Para: {{memo.usuario}}</h8>
+          <h8 class="text-teal-700">Para: {{memo.destinatarioUsu}}</h8>
           <hr />
           <router-link to="/bandeja/nuevo" class="link-dark"
             >Responder</router-link

@@ -35,7 +35,7 @@
           </router-link>
         </li>
         <li class="sidebar-item">
-          <router-link class="sidebar-link" to="/login">
+          <router-link class="sidebar-link" to="/Login">
            <i class="fas fa-sign-out-alt"></i>
             <span class="align-middle">Salir</span>
           </router-link>

@@ -37,15 +37,6 @@
                     <div class="container">
                       <div class="mb-3">
                         <label for="floatingInput"></label>
-                        <!-- <input
-                          class="form-control form-control-lg"
-                          :type="show == true ? 'text' : 'password'"
-                          id="floatingPassword"
-                          required
-                          placeholder="Ingrese Contraseña"
-                          v-model="login_form.password"
-                          :maxlength="20"
-                        /> -->
 
                         <div class="form-floating mb-3">
                           <input
@@ -95,10 +86,14 @@
                         
                         <button type="submit"  class="btn btn-lg btn-primary" >Ingresar</button>
                       </router-link> -->
-                        <div class="mt-3">
-                        <div class="alert alert-danger" role="alert" v-show="error"
-                        >{{error_msg}}</div
-                      >
+                      <div class="mt-3">
+                        <div
+                          class="alert alert-danger"
+                          role="alert"
+                          v-show="error"
+                        >
+                          {{ error_msg }}
+                        </div>
                       </div>
                       <button
                         @click="login"
@@ -106,7 +101,7 @@
                         class="btn btn-lg btn-primary"
                       >
                         login
-                      </button>                      
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -121,11 +116,7 @@
 
 <script>
 import axios from "axios";
-import swal from 'sweetalert';
-
-import { ref } from "vue";
-import { useStore } from "vuex";
-import { error } from 'jquery';
+import swal from "sweetalert";
 
 export default {
   name: "Login",
@@ -137,14 +128,13 @@ export default {
       apellidos: "",
       show: false,
       error: false,
-      error_msg: "Usuario y/o Contraseñas INCORRECTAS ",
+
       usuario: [],
     };
   },
 
   methods: {
     async login() {
-
       let json = {
         correo: this.correo,
         contraseña: this.contraseña,
@@ -155,16 +145,13 @@ export default {
         .post(`https://localhost:5001/api/usuario/login`, json)
         .then((data) => {
           if (data.status == 200) {
-            localStorage.setItem("user-info",JSON.stringify(data));
+            localStorage.setItem("user-info", JSON.stringify(data));
             this.$router.push("/");
           } else {
-            this.error = true;           
+            swal("Error!", "Usuario y/o Contraseña incorrecto!", "error");
           }
         });
     },
-
-  
- 
 
     mounted() {
       this.getLogin();

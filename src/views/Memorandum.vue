@@ -250,7 +250,9 @@ export default {
         if (request.ok) {
           this.$emit("update");
           console.log(request);
+          swal("Bien!", "Memorandum enviado!", "success");
           this.itemPorAgregar = "";
+          this.$router.push("/");
         }
       } catch (error) {
         console.log(error);

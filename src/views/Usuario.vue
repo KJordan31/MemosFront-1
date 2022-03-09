@@ -44,77 +44,84 @@
           @submit.prevent="agregarItem"
           method="post"
         >
-          <div class="col-md-6">
-            <label for="validationCustom01" class="form-label">Nombre</label>
+          <div class="form-floating mb-3">
             <input
-              type="text"
+              type="correo"
               class="form-control"
-              id="exampleFormControlInput1"
-              placeholder=""
-              aria-describedby="btnAgregarItem"
+              id="floatingUsuario"
+              placeholder="Nombre"
+              required
               v-model="itemPorAgregar.nombre"
               autocomplete="off"
             />
-            <div class="valid-feedback">Looks good!</div>
+            <label for="floatingInput">Nombre</label>
           </div>
-          <div class="col-md-6">
-            <label for="validationCustom02" class="form-label">Apellido</label>
-
+          <div class="form-floating mb-3">
             <input
-              type="text"
+              type="correo"
               class="form-control"
-              id="exampleFormControlInput2"
-              placeholder=""
-              aria-describedby="btnAgregarItem"
+              id="floatingUsuario"
+              placeholder="Nombre"
+              required
               v-model="itemPorAgregar.apellidos"
               autocomplete="off"
             />
-            <div class="valid-feedback">Looks good!</div>
+            <label for="floatingInput">Apellidos</label>
           </div>
-          <div class="col-md-8">
-            <label for="validationCustomUsername" class="form-label"
-              >Correo</label
-            >
-            <div class="input-group has-validation">
-              <input
-                type="text"
-                class="form-control"
-                id="exampleFormControlInput3"
-                placeholder=""
-                aria-describedby="btnAgregarItem"
-                v-model="itemPorAgregar.correo"
-                autocomplete="off"
-              />
-              <div class="invalid-feedback">Please choose a username.</div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <label for="validationCustom03" class="form-label"
-              >Contraseña</label
-            >
 
+          <div class="form-floating mb-3">
             <input
-              type="text"
+              type="correo"
               class="form-control"
-              id="exampleFormControlInput4"
-              placeholder=""
-              aria-describedby="btnAgregarItem"
+              id="floatingUsuario"
+              placeholder="Correo"
+              required
+              v-model="itemPorAgregar.correo"
+              autocomplete="off"
+            />
+            <label for="floatingInput">Correo</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input
+              type="correo"
+              class="form-control"
+              id="floatingUsuario"
+              placeholder="Nombre"
+              required
               v-model="itemPorAgregar.contraseña"
               autocomplete="off"
             />
-            <div class="invalid-feedback">
-              Por favos ingrese una contraseña valida.
-            </div>
+            <label for="floatingInput">Contraseña</label>
           </div>
-          <label for="validationCustom03" class="form-label"
-            >Tipo de Usuario</label
-          >
-          <select v-model="itemPorAgregar.super_Usuario" class="form-control">
-            <option value="" placeholder="Seleccione un elemento"></option>
-            <option value="true">Gerencia</option>
-            <option value="false">Empleado</option>
-          </select>
 
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="True"
+              value="true"
+              checked
+              v-model="itemPorAgregar.super_Usuario"
+            />
+            <label class="form-check-label" for="exampleRadios1">
+              Gerencia
+            </label>
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="exampleRadios"
+              id="False"
+              value="false"
+              v-model="itemPorAgregar.super_Usuario"
+            />
+            <label class="form-check-label" for="exampleRadios2">
+              Empleado
+            </label>
+          </div>
           <div class="col-12">
             <button
               class="btn btn-outline-info mb-0"
@@ -478,7 +485,6 @@
                     type="button"
                     @click="Editar(usuario)"
                     class="btn btn-outline-success"
-                    
                   >
                     Guardar
                   </button>
@@ -523,41 +529,6 @@ export default {
     };
   },
 
-  // emits: ["update"],
-  // props: ["idItem", "data"],
-  // setup(props, { emit }) {
-  //   const actualizado = ref(false);
-
-  //   const GuardarCambio = async (item) => {
-  //     const itemActualizado = { ...item.data };
-  //     const usuario = item.usuario;
-
-  //     try {
-  //       const request = await fetch(
-  //         `https://localhost:5001/api/${usuario}/${itemActualizado.id}`,
-  //         {
-  //           method: "PUT",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(itemActualizado),
-  //         }
-  //       );
-
-  //       if (request.ok) {
-  //         actualizado.value = true;
-  //         emit("ActualizarDataCatalog", itemActualizado);
-  //         $("#myModal").modal("hide");
-  //         swal("Bien!", "Usuario Modificado!", "success");
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   return { GuardarCambio, actualizado };
-  // },
-
   computed: {
     filtro() {
       return this.usuarios.filter(
@@ -581,8 +552,7 @@ export default {
         });
     },
 
-    
-     editarUsuario(usuario) {
+    editarUsuario(usuario) {
       this.usuarioEditado = Object.assign({}, usuario);
       this.editando = usuario.id;
     },
@@ -602,12 +572,12 @@ export default {
       }
     },
 
-
     async Editar(usuario) {
-   
-  try {
-    const request = await fetch(`https://localhost:5001/api/usuario/${this.usuario.id}`, {
-      method: "PUT",
+      try {
+        const request = await fetch(
+          `https://localhost:5001/api/usuario/${this.usuario.id}`,
+          {
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
@@ -616,16 +586,14 @@ export default {
         );
 
         if (request.ok) {
-         
           swal("Bien!", "Usuario Modificado!", "success");
           emit("ActualizarUser", usuario);
-          // $("#myModal").modal("hide");
-          actualizar = false          
+          actualizar = false;
         }
       } catch (error) {
         console.log(error);
       }
-},
+    },
 
     async agregarItem() {
       console.log("object");
@@ -649,6 +617,7 @@ export default {
           swal("Excelente!", "Usuario Creado!", "success");
 
           this.itemPorAgregar = "";
+          this.agregar = false;
         }
       } catch (error) {
         console.log(error);
@@ -663,6 +632,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

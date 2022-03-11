@@ -21,6 +21,11 @@ import NavBar from '../layout/NavBar.vue'
 
 export default {
   name: 'Home',
+  methods: {
+    created(){
+     
+    }
+  },
   components: {
     SideNav,
     NavBar

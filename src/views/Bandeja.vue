@@ -25,9 +25,9 @@
               <div class="title">
                 {{ memo.asunto }}
               </div>
-              <li v-for="contenido in contenidos" :key="contenido.Id">
+              <li>
               <div class="description" >
-                {{contenido.contenido}}
+                {{memo.contenido.contenido}}
               </div>
               </li>
             </router-link>
@@ -47,7 +47,8 @@ export default {
   data() {
     return {
       memos: [],
-      contenidos: []
+      
+      
     };
   },
 
@@ -60,18 +61,12 @@ export default {
         });
     },
 
-    getContenido(){
-        fetch("https://localhost:5001/api/contenido")
-        .then((response) => response.json())
-        .then((data) => {
-            this.contenidos = data;
-        })
-    }
+ 
   },
 
   mounted() {
     this.getMemos();
-    this.getContenido();
+   
   },
 };
 </script>

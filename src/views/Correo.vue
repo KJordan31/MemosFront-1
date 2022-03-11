@@ -14,8 +14,8 @@
           >
           <hr />
           <div class="space-y-3">
-              <li v-for="contenido in contenidos" :key="contenido.Id">
-            <p class="text-gray-700">{{ contenido.contenido }}</p>
+              <li >
+            <p class="text-gray-700">{{ memo.contenido.contenido }}</p>
             </li>
           </div>
           <hr />
@@ -36,7 +36,6 @@ export default {
 data() {
     return {
       memos: [],
-      contenidos: [],
       usuarios: []
     };
   },
@@ -51,13 +50,7 @@ data() {
         });
     },
 
-    getContenido(){
-        fetch("https://localhost:5001/api/contenido")
-        .then((response) => response.json())
-        .then((data) => {
-            this.contenidos = data;
-        })
-    },
+
      getUsuarios() {
       fetch("https://localhost:5001/api/usuario")
         .then((response) => response.json())
@@ -69,7 +62,7 @@ data() {
 
   mounted() {
     this.getMemos();
-    this.getContenido();
+    
     this.getUsuarios();
   },
 

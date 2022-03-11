@@ -143,9 +143,8 @@ export default {
       };
       const response = await axios
         .post(`https://localhost:5001/api/usuario/login`, json)
-        .then((data) => {
+        .then((data) => {localStorage.setItem("user-info", JSON.stringify(data.data));
           if (data.status == 200) {
-            localStorage.setItem("user-info", JSON.stringify(data));
             this.$router.push("/");
           } else {
             swal("Error!", "Usuario y/o Contraseña incorrecto!", "error");

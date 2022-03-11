@@ -64,14 +64,17 @@
                 <!-- BEGIN SEARCH INPUT -->
                 <div class="input-group">
                   <input
-                    type="search"                   
+                    type="text"
                     class="form-control"
                     placeholder="Buscar"
-                    v-model="usuario"
-                    
+                    v-model="filtro_usuario"
                   />
                   <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button">
+                    <button
+                      class="btn btn-primary"
+                      type="button"
+                      @click="filterUser"
+                    >
                       <i class="fa fa-search"></i>
                     </button>
                   </span>
@@ -87,7 +90,7 @@
                 </div>
 
                 <!-- BEGIN TABLE RESULT -->
-                <div class="responsive-table" v-show="!Object.keys(usuario).length">
+                <div class="responsive-table">
                   <table class="table table-hover">
                     <tbody>
                       <tr>
@@ -97,11 +100,11 @@
                         <th>Usuario</th>
                         <th>Adjuntos</th>
                       </tr>
-                      <tr v-for="memo in datosPaginados" :key="memo" v-show="1">
+                      <tr v-for="memo in memos" :key="memo" v-show="1">
                         <td>{{ memo.codigo }}</td>
                         <td>{{ memo.asunto }}</td>
                         <td>{{ memo.fecha }}</td>
-                        <td>{{ memo.usuario }}</td>
+                        <td>{{ memo.destinatarioUsu }}</td>
                         <td><i class="fas fa-search-plus"></i></td>
                       </tr>
                     </tbody>
@@ -109,29 +112,8 @@
                 </div>
                 <!-- END TABLE RESULT -->
 
-                <div class="responsive-table" v-show="Object.keys(usuario).length">
-                  <table class="table table-hover">
-                    <tbody>
-                      <tr>
-                        <th>Código</th>
-                        <th>Asunto</th>
-                        <th>Fecha</th>
-                        <th>Usuario</th>
-                        <th>Adjuntos</th>
-                      </tr>
-                      <tr v-for="memo in datosPaginados" :key="memo">
-                        <td>{{ memo.codigo }}</td>
-                        <td>{{ memo.asunto }}</td>
-                        <td>{{ memo.fecha }}</td>
-                        <td>{{ memo.usuario }}</td>
-                        <td><i class="fas fa-search-plus"></i></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
                 <!-- BEGIN PAGINATION -->
-                <nav aria-label="Page-navigation">
+                <!-- <nav aria-label="Page-navigation">
                   <ul class="pagination justify-content-center">
                     <li class="page-item" @click="getPreviousPage()">
                       <a class="page-link">Anterior</a>
@@ -150,7 +132,7 @@
                       <a class="page-link">Siguiente</a>
                     </li>
                   </ul>
-                </nav>
+                </nav> -->
 
                 <!-- END PAGINATION -->
               </div>
@@ -161,48 +143,117 @@
       </div>
       <!-- END SEARCH RESULT -->
       <!-- Dashboard -->
-      <div class="row">
-        <div class="col-12 col-md-6 col-xxl-3 d-flex order-2 order-xxl-3">
-          <div class="card flex-fill w-100">
-            <div class="card-header">
-              <h5 class="card-title mb-0">Tipo de Memorandums</h5>
-            </div>
-            <div class="card-body d-flex">
-              <div class="align-self-center w-100">
-                <div class="py-3">
-                  <div class="chart chart-xs">
-                    <canvas
-                      ref="VueCanvasDrawing"
-                      id="chartjs-dashboard-pie"
-                    ></canvas>
-                  </div>
-                </div>
-
-                <table class="table mb-0">
-                  <tbody
-                    v-for="tipo in tipos"
-                    :key="tipo.Id"
-                    v-bind:value="tipo.id"
-                  >
-                    <tr>
-                      <td>{{ tipo.descripcion }}</td>
-                      <td class="text-end">4306</td>
-                    </tr>
-                  </tbody>
-                </table>
+      <!-- Pie Chart -->
+      <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div
+            class="
+              card-header
+              py-3
+              d-flex
+              flex-row
+              align-items-center
+              justify-content-between
+            "
+          >
+            <h6 class="m-0 font-weight-bold text-primary">Memorandums</h6>
+            <div class="dropdown no-arrow">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div
+                class="
+                  dropdown-menu dropdown-menu-right
+                  shadow
+                  animated--fade-in
+                "
+                aria-labelledby="dropdownMenuLink"
+              >
+                <div class="dropdown-header">Dropdown Header:</div>
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
               </div>
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-pie pt-4 pb-2">
+              <canvas id="myPieChart"></canvas>
+            </div>
+            <div class="mt-4 text-center small">
+              <span class="mr-2">
+                <i class="fas fa-circle text-primary"></i> Informativos
+              </span>
+              <span class="mr-2">
+                <i class="fas fa-circle text-success"></i> Llamados
+              </span>
+              <span class="mr-2">
+                <i class="fas fa-circle text-info"></i> Corrolativo
+              </span>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 col-lg-4 col-xxl-3 d-flex">
-        <div class="card flex-fill w-100">
-          <div class="card-header">
-            <h5 class="card-title mb-0">Usuarios</h5>
-          </div>
-          <div class="card-body d-flex w-100">
-            <div class="align-self-center chart chart-lg">
-              <canvas id="chartjs-dashboard-bar"></canvas>
+      <div class="row">
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+          <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div
+              class="
+                card-header
+                py-3
+                d-flex
+                flex-row
+                align-items-center
+                justify-content-between
+              "
+            >
+              <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
+              <div class="dropdown no-arrow">
+                <a
+                  class="dropdown-toggle"
+                  href="#"
+                  role="button"
+                  id="dropdownMenuLink"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                </a>
+                <div
+                  class="
+                    dropdown-menu dropdown-menu-right
+                    shadow
+                    animated--fade-in
+                  "
+                  aria-labelledby="dropdownMenuLink"
+                >
+                  <div class="dropdown-header">Dropdown Header:</div>
+                  <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-area">
+                <canvas id="myBarChart"></canvas>
+              </div>
             </div>
           </div>
         </div>
@@ -214,12 +265,14 @@
 <script>
 import DatePicker from "vue3-datepicker";
 import VueDrawingCanvas from "vue-drawing-canvas";
+import LineChart from "../composables/LineChart";
 
 export default {
   name: "app",
   components: {
     DatePicker,
     VueDrawingCanvas,
+    LineChart,
   },
   data() {
     return {
@@ -238,14 +291,45 @@ export default {
       datosPaginados: [],
 
       PaginaActual: 1,
+
+      loaded: false,
+
+      chartdata: null,
+
+      filtro_usuario: " ",
+
+      copyMemo: []
     };
   },
+  filters: {
+    date: function (data) {
+      return (
+        data.getFullYear() +
+        "año" +
+        data.getMonth() +
+        "mes" +
+        data.getDate() +
+        "día, semana" +
+        data.getDay() +
+        "," +
+        data.getHours() +
+        " Hora " +
+        data.getMinutes() +
+        " minutos " +
+        data.getSeconds() +
+        " segundos "
+      );
+    },
+  },
 
-    computed: {
+  created(){
+    this.copyMemo = this.memos;
+
+  },
+  computed: {
     filtro() {
-   return this.usuarios.filter((item) => item.nombre.includes(this.usuario));
-    }
-
+      return this.memos.filter((item) => item.destinatarioUsu.includes(this.usuario));
+    },
   },
 
   mounted() {
@@ -263,6 +347,26 @@ export default {
         });
     },
 
+    filterUser() {
+       this.memos = this.copyMemo 
+      this.memos = this.memos.filter((memo) => {
+        return memo.destinatarioUsu === this.filtro_usuario;
+      }); 
+    },
+
+    async mounted() {
+      this.loaded = false;
+      try {
+        const { userlist } = await fetch(
+          "https://localhost:5001/api/tipomemorandum"
+        );
+        this.chartdata = userlist;
+        this.loaded = true;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+
     totalPaginas() {
       return Math.ceil(this.memos.length / this.elementosPorPagina);
     },
@@ -274,8 +378,6 @@ export default {
       let fin = (noPagina = this.elementosPorPagina);
 
       this.datosPaginados = this.memos.slice(ini, fin);
-
-   
     },
 
     getPreviousPage() {
@@ -313,4 +415,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="css">
+.small {
+  max-width: 800px;
+  /* max-height: 500px; */
+  margin: 50px auto;
+}
+</style>

@@ -1,4 +1,10 @@
 <template>
+
+
+
+
+
+
   <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
       <router-link to="/" class="sidebar-brand">
@@ -63,12 +69,21 @@
           </router-link>
         </li>
       </ul>
-    </div>
+      
+    </div>    
   </nav>
 </template>
 
 <script>
 export default {
   name: "SideNav",
+  data (){
+    return{
+      elementoActual: 1,
+    }
+  },
+  methods:{
+
+  }
 };
 </script>

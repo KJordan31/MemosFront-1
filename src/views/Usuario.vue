@@ -125,7 +125,7 @@
           <div class="col-12">
             <button
               class="btn btn-outline-info mb-0"
-              type="button"
+              type="submit"
               id="btnAgregarItem"
               @click="agregarItem"
             >
@@ -466,7 +466,7 @@
                 >
                   <span class="alert-icon"><i class="ni ni-like-2"></i></span>
                   <span class="alert-text"
-                    ><strong>Exito!</strong> Se realizó la actualización</span
+                    ></span
                   >
                   <button
                     type="button"
@@ -592,6 +592,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        swal("Error!", "Usuario no pudo ser ModificadO!", "error");
       }
     },
 
@@ -621,6 +622,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        swal("Error!", "Usuario no Pudo Ser Ingresado Correctamente!", "error");
       }
     },
 

@@ -24,27 +24,27 @@
         <div class="panel-heading">
         <h4 class="panel-title fst-italic">Seguridad</h4>
         </div>
-        <form ref="ConfigurationForm" v-on:submit="Modificar">
+        <form ref="ConfigurationForm" @submit.prevent="Editar">
         <div class="panel-body">
           <div class="form-floating mb-3">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+  <input type="text" class="form-control" id="floatingPassword" placeholder="Ingrese la contraseña original" required v-model="usuario.contraseña">
   
   <label for="floatingInput">Contraseña</label>
   
 </div>
 <div class="form-floating mb-3">
-  <input type="password" class="form-control " id="floatingPassword" placeholder="Password" required>
+  <input  type="password" class="form-control " id="pass" name="clave1" placeholder="Establezca una nueva contraseña" required v-model="contraseña"  >
   
   <label for="floatingPassword">Nueva Contraseña</label>
 </div>     
 <div class="form-floating mb-3" >
-  <input type="password" class="form-control " id="floatingPassword" placeholder="Password" required>
+  <input type="password" class="form-control " id="pass2" name="clave2" placeholder="Confirme la nueva contraseña" required  v-model="confirmarContraseña"  >
   
   <label for="floatingPassword">Confirme Contraseña</label>
 </div>          
 
            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button type="submit" class="btn btn-outline-success">
+              <button type="submit" class="btn btn-outline-success" value="Verificar"  @Click="Editar(usuario)">
                 <span class="icon is-small">
                   <i class="fas fa-check"></i>
                   </span>  Guardar</button>
@@ -57,6 +57,8 @@
         
 
         </div>
+        
+
         </form>
       </div>
     </form>
@@ -66,58 +68,92 @@
 </template>
 
 <script>
-import { required, sameAs, minLength } from 'vuelidate/lib/validators'
+
 export default { 
- data(){
-     return{        
-          password: '',
-         repeatPassword: '',
-         showpassword: false,
-         usuarios:{
-           "usuarios" : " ",
-           "contraseña" : "",
-         }
-     }
- },
+   el: '#myform',
+   data(){
+    return {
+      usuario: {
+        contraseña: "",
+        id_Usuario: "",
+      },
+      antigua: null,
+      contraseña: null,
+      confirmarContraseña: null,
+      editando: null,
 
-mounted(){
+    }
 
-},
+  },
+  created: function () {
+    var data = JSON.parse(localStorage.getItem("user-info"));
+    if (data != null) {
+      this.usuario.contraseña = data.contraseña;
+      this.usuario.id_Usuario = data.id_Usuario;
+      console.log(this.usuario.contraseña)
+      console.log(this.usuario.id_Usuario)
+    } else {
+      console.log("TODO: Regresar a pagina de LOGUEO");
+    }
+  },
+methods: { 
 
-  validations: {
-    password: {
-      required,
-      minLength: minLength(6)
+  validateForm (e){
+     if(this.usuario.contraseña != antigua ){
+      alert("Debes Ingresar la antigua contraseña");
+      e.preventDefault();
+    }
+    if(!this.contraseña){
+      alert("Debes Ingresar la nueva contraseña");
+      e.preventDefault();
+    }
+    if(!this.confirmarContraseña){
+      alert("Debes Confirmar la nueva contraseña");
+      e.preventDefault();
+    }
+  },
+
+   editarUsuario(usuario) {
+      this.usuarioEditado = Object.assign({}, usuario);
+      this.editando = usuario.id;
     },
-    repeatPassword: {
-      sameAsPassword: sameAs('password')
-    }
-  
+    modificarUsuario(id_Usuario) {
+      this.usuario = id_Usuario;
+      console.log(this.usuario);
+    },
 
-  },
+   async Editar(contraseña) {
+      try {
+        const request = await fetch(
+          `https://localhost:5001/api/usuario/${this.usuario.id_Usuario}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(contraseña),
+          }
+        );
 
+        if (request.ok) {
+          swal("Bien!", "Contraseña Modificado!", "success");
+         
+        }
+      } catch (error) {
+        console.log(error);
+        swal("Error!", "Contraseña no pudo ser Modificada!", "error");
+      }
+    },
 
-      
- 
- methods:{
-  toggleShowPassword (){
-    var show = document.getElementById("password")
-    if(this.showpassword == false){
-      this.showpassword = true
-      show.type = "text"
-    }else{
-      this.showpassword = false
-      show.type= "password"
-    }
-  },
-
-  Modificar(event){
-    event.preventDefault();
-
-  }
 }
-}
 
+}
 
 </script>
+
+
+<style>
+
+
+</style>
 

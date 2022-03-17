@@ -23,6 +23,8 @@
       <Catalog :data="dataCatalog" :title="catalogoSeleccionado" @update="actualizardata"/>
     </div>
   </div>
+
+  
    
 </template>
 

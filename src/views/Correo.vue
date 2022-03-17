@@ -5,7 +5,7 @@
         <div class="card-body" >
           <h1 class="h3 mb-2">{{ memo.asunto }}</h1>
           <h5 class="text-teal-700">
-            {{usuario.nombre}}{{usuario.apellidos}} ({{ usuario.correo }}) {{memo.fecha}}
+            {{usuario.nombre}} {{usuario.apellidos}} ({{ usuario.correo }}) {{memo.fecha}}
           </h5>
           <h8 class="text-teal-700">Para: {{memo.destinatarioUsu}}</h8>
           <hr />
@@ -33,6 +33,7 @@
 
 <script>
 export default {
+  
 data() {
     return {
       memos: [],

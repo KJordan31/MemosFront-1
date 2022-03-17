@@ -68,6 +68,7 @@
               />
             </div>
           </div>
+          
           <div class="form-row mb-3">
             <label for="bcc" class="col-2 col-sm-1 col-form-label"
               >Adjuntos:</label
@@ -83,6 +84,7 @@
                 />
               </form>
             </div>
+            
           </div>
         </form>
         <div class="row">
@@ -140,6 +142,19 @@
                 name="myfile"
               >
                 <span class="fa fa-paperclip"></span>
+              </button>
+            </div>
+
+            <div class="form-row mb-3">
+                <button
+                type="submit"
+                class="btn btn-outline-success"
+                @click="AbrirPlantillas"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-clipboard"></i>
+                </span>
+                Plantillas
               </button>
             </div>
             <div class="form-group mt-4">

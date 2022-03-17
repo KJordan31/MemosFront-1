@@ -158,39 +158,10 @@
             "
           >
             <h6 class="m-0 font-weight-bold text-primary">Memorandums</h6>
-            <div class="dropdown no-arrow">
-              <a
-                class="dropdown-toggle"
-                href="#"
-                role="button"
-                id="dropdownMenuLink"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-              </a>
-              <div
-                class="
-                  dropdown-menu dropdown-menu-right
-                  shadow
-                  animated--fade-in
-                "
-                aria-labelledby="dropdownMenuLink"
-              >
-                <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </div>
           </div>
           <!-- Card Body -->
           <div class="card-body">
-            <div class="chart-pie pt-4 pb-2">
-              <canvas id="myPieChart"></canvas>
-            </div>
+            <div class="chart-pie pt-4 pb-2"></div>
             <div class="mt-4 text-center small">
               <span class="mr-2">
                 <i class="fas fa-circle text-primary"></i> Informativos
@@ -221,39 +192,8 @@
               "
             >
               <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
-              <div class="dropdown no-arrow">
-                <a
-                  class="dropdown-toggle"
-                  href="#"
-                  role="button"
-                  id="dropdownMenuLink"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                </a>
-                <div
-                  class="
-                    dropdown-menu dropdown-menu-right
-                    shadow
-                    animated--fade-in
-                  "
-                  aria-labelledby="dropdownMenuLink"
-                >
-                  <div class="dropdown-header">Dropdown Header:</div>
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </div>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-              <div class="chart-area">
-                <canvas id="myBarChart"></canvas>
-              </div>
+              <BarChart v-bind="barChartProps" />
+              <LineChart></LineChart>
             </div>
           </div>
         </div>
@@ -265,14 +205,17 @@
 <script>
 import DatePicker from "vue3-datepicker";
 import VueDrawingCanvas from "vue-drawing-canvas";
-import LineChart from "../composables/LineChart";
+import { BarChart, useBarChart } from "vue-chart-3";
+import { ref, computed, onMounted } from "vue";
+
+import axios from "axios";
 
 export default {
   name: "app",
   components: {
     DatePicker,
     VueDrawingCanvas,
-    LineChart,
+    BarChart,
   },
   data() {
     return {
@@ -298,7 +241,9 @@ export default {
 
       filtro_usuario: " ",
 
-      copyMemo: []
+      copyMemo: [],
+
+      DatosUsu: [],
     };
   },
   filters: {
@@ -322,19 +267,19 @@ export default {
     },
   },
 
-  created(){
+  created() {
     this.copyMemo = this.memos;
-
   },
   computed: {
     filtro() {
-      return this.memos.filter((item) => item.destinatarioUsu.includes(this.usuario));
+      return this.memos.filter((item) =>
+        item.destinatarioUsu.includes(this.usuario)
+      );
     },
   },
 
   mounted() {
     this.getMemos();
-    this.getTipo();
     this.getDataPagina(1);
   },
 
@@ -348,23 +293,10 @@ export default {
     },
 
     filterUser() {
-       this.memos = this.copyMemo 
+      this.memos = this.copyMemo;
       this.memos = this.memos.filter((memo) => {
         return memo.destinatarioUsu === this.filtro_usuario;
-      }); 
-    },
-
-    async mounted() {
-      this.loaded = false;
-      try {
-        const { userlist } = await fetch(
-          "https://localhost:5001/api/tipomemorandum"
-        );
-        this.chartdata = userlist;
-        this.loaded = true;
-      } catch (e) {
-        console.error(e);
-      }
+      });
     },
 
     totalPaginas() {
@@ -411,6 +343,54 @@ export default {
           this.tipos = data;
         });
     },
+  },
+
+  setup() {
+    const Labels = ref(["Kenneth", "Micro", "Sebastian"]);
+
+    const Total = ref([5, 10, 20]);
+
+    onMounted(async () => {
+      const request = await fetch("https://localhost:5001/api/datos/usuarios");
+      const response = await request.json();
+
+      Labels.value = response.flatMap((x) => x.DestinatarioUsu);
+      Total.value = response.flatMap((x) => x.Total);
+    });
+    const data = ref([1, 1, 2, 1, 2]);
+    const legendTop = ref(true);
+    const imgData = ref(null);
+
+    const options = computed(() => ({
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    }));
+
+    const chartData = computed(() => ({
+      labels: Labels.value,
+      datasets: [
+        {
+          data: Total.value,
+          backgroundColor: [
+            "#0078DF",
+            "#0079AF",
+            "#123E6B",
+            "#97B0C4",
+            "#A5C8ED",
+          ],
+        },
+      ],
+    }));
+
+    const { barChartProps, barChartRef } = useBarChart({
+      chartData,
+      options,
+    });
+
+    return { barChartProps, barChartRef, imgData, Labels, Total };
   },
 };
 </script>

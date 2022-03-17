@@ -41,7 +41,7 @@
         <form
           class="row g-3 needs-validation"
           novalidate
-          @submit.prevent="agregarItem"
+          @submit.prevent="agregar"
           method="post"
         >
           <div class="form-floating mb-3">
@@ -465,9 +465,7 @@
                   role="alert"
                 >
                   <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                  <span class="alert-text"
-                    ></span
-                  >
+                  <span class="alert-text"></span>
                   <button
                     type="button"
                     class="btn-close"
@@ -587,8 +585,6 @@ export default {
 
         if (request.ok) {
           swal("Bien!", "Usuario Modificado!", "success");
-          emit("ActualizarUser", usuario);
-          actualizar = false;
         }
       } catch (error) {
         console.log(error);
@@ -603,7 +599,9 @@ export default {
         apellidos: this.itemPorAgregar.apellidos,
         correo: this.itemPorAgregar.correo,
         contraseña: this.itemPorAgregar.contraseña,
+        super_Usuario: this.itemPorAgregar.super_Usuario,
       };
+
       try {
         const request = await fetch(`https://localhost:5001/api/usuario`, {
           method: "POST",

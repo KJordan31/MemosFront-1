@@ -30,10 +30,17 @@
             </button>
         </td>
     </tr>
+
+    <!-- Modal -->
+
+    
+
+
+
 </template>
 
 <script>
-import  Modal  from "bootstrap"
+
 
 export default {
     name: "Item",

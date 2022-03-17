@@ -166,6 +166,7 @@
                 placeholder="Click here to reply"
                 v-model="itemPorAgregar.contenido"
                 required
+                @Plantilla="planti= $event"
               ></textarea>
             </div>
             <br />
@@ -199,9 +200,14 @@
 
 <script>
 import emailjs from "@emailjs/browser";
+import VistaPlantillas from "../views/VistaPlantilas.vue"
 
 export default {
-  name: "my-component",
+  name: "Memorandum",
+  props:['plantillasData '],
+  components: {
+    VistaPlantillas  
+  },
   data() {
     return {
       tipos: [],
@@ -210,6 +216,7 @@ export default {
       itemPorAgregar: {},
       memos: [],
       contenidos: [],
+      planti: ""
     };
   },
   methods: {
@@ -217,6 +224,10 @@ export default {
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append("my-file", file);
+    },
+
+    AbrirPlantillas(){
+       this.$router.push("/seleccion");
     },
 
     sendEmail() {

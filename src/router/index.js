@@ -74,13 +74,15 @@ const routes = [
         path: '/plantilla',
         name: 'Plantilla',
         component: () => import(/* webpackChunkName: "about" */ '../views/Plantillas.vue'),
-        children : [
-          {
-            path: 'seleccion',
-            name: 'Seleccion',
-            component: () => import( '../views/VistaPlantilas.vue'),
-          }
-        ]
+    
+       
+      },
+
+      {
+        path: '/seleccion',
+        name: 'VistaPlantilas',
+        component: () => import(/* webpackChunkName: "about" */ '../views/VistaPlantilas.vue'),
+    
        
       },
       {

@@ -19,24 +19,17 @@
                                 
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="rememberMe"
-                                        v-model="idItem.data.activo">
+                                        v-model="idItem.data.enUso">
                                     <label class="form-check-label" for="rememberMe">Estado</label>
                                 </div>
-                                <div v-if="actualizado"  class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                                    <span class="alert-text"><strong>Exito!</strong> Se realizó la actualización</span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                 <div v-if="!actualizado" class="text-center">
+                                  <div  class="d-grid gap-2 d-md-flex justify-content-md-end">
                                     <button type="button" @click="GuardarCambio(idItem)"
-                                        class="btn btn-round bg-gradient-info btn-lg w-100 mt-4 mb-0">Guardar
+                                        class="btn  btn-outline-primary " data-bs-dismiss="modal">Guardar
                                     </button>
-                                </div>
-                                <div v-else class="text-center">
+                               
+                                
                                     <button type="button" @click="actualizado = !actualizado" 
-                                        class="btn btn-round bg-gradient-danger btn-lg w-100 mt-4 mb-0"
+                                        class="btn btn-outline-danger "
                                         data-bs-dismiss="modal"
                                     >
                                         Cerrar
@@ -54,12 +47,14 @@
 
 <script>
 import {ref} from 'vue'
+import swal from "sweetalert";
 
 
 
 export default {
     props:['idItem'],
     setup(props, {emit}){
+
 
         const actualizado = ref(false);
         
@@ -79,6 +74,7 @@ export default {
                 if (request.ok) {
                     actualizado.value = true;
                     emit('ActualizarDataCatalog', itemActualizado)
+                     swal("Bien!", "Modificación Correcta!", "success");
                 }
             } catch (error) {
                  console.log(error);

@@ -88,7 +88,9 @@ export default {
     },
     methods:{
       AbrirModal(id){
-         let modal = new bootstrap.Modal(document.querySelector('#modal-form'));
+        this.$emit('#modal-form')
+        //  let modal = new bootstrap.Modal(document.querySelector('#modal-form'));
+         
          $('#modal-form').modal('show')
          
          
@@ -99,7 +101,7 @@ export default {
 
          this.dataItem.data = item;
          this.dataItem.catalogo = this.title;
-         modal.show();
+        
       },
 
       actualizarItem(item){

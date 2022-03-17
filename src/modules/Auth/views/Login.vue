@@ -141,6 +141,7 @@ export default {
         nombre: this.nombre,
         apellidos: this.apellidos,
       };
+      
       const response = await axios
         .post(`https://localhost:5001/api/usuario/login`, json)
         .then((data) => {localStorage.setItem("user-info", JSON.stringify(data.data));

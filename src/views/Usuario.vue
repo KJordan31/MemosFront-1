@@ -396,18 +396,20 @@
 
   <div
     v-if="actualizar"
-    class="modal-dialog modal-dialog-centered"
+    class="modal"
     id="myModal"
     tabindex="-1"
     aria-hidden="true"
+    role="dialog"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <div class="card card-plain">
+          <div class="card card-plain" style="width: 30rem;">
             <div class="card-header pb-0 text-left">
               <h3 class="modal-title text-info text-gradient">Edición</h3>
               <p class="mb-0">Modificacion de Usuario</p>
+              
             </div>
             <div class="modal-body">
               <form role="form text-left" @submit.prevent="Editar">
@@ -483,12 +485,13 @@
                     type="button"
                     @click="Editar(usuario)"
                     class="btn btn-outline-success"
+                    data-dismiss="modal"
                   >
                     Guardar
                   </button>
                   <button
                     type="button"
-                    @click="actualizar = false"
+                    @click="actualizar = !actualizar"
                     class="btn btn-outline-danger"
                     data-dismiss="modal"
                   >
@@ -585,6 +588,7 @@ export default {
 
         if (request.ok) {
           swal("Bien!", "Usuario Modificado!", "success");
+         $('#myModal').modal('hide');
         }
       } catch (error) {
         console.log(error);

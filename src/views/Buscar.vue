@@ -105,11 +105,42 @@
                         <td>{{ memo.asunto }}</td>
                         <td>{{ memo.fecha }}</td>
                         <td>{{ memo.destinatarioUsu }}</td>
-                        <td><i class="fas fa-search-plus"></i></td>
+                        <td>
+                          <button
+                            @click="AdjuntosList(memo)"
+                            class="btn btn-outline-dark"
+                            type="button"
+                            data-toggle="modal"
+                            data-target="#myModal"
+                          >
+                            <span class="btn-inner--icon"
+                              ><i class="fas fa-search-plus"></i
+                            ></span>
+                            <span class="btn-inner--text"></span>
+                          </button>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
+
+                <!-- modal -->
+         <div v-if="actualizar" class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ memo.codigo }}</h5>
+      </div>
+      <div class="modal-body" >
+        {{memo.contenido.contenido}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
                 <!-- END TABLE RESULT -->
 
                 <!-- BEGIN PAGINATION -->
@@ -244,6 +275,8 @@ export default {
       copyMemo: [],
 
       DatosUsu: [],
+
+      actualizar: false,
     };
   },
   filters: {
@@ -270,13 +303,6 @@ export default {
   created() {
     this.copyMemo = this.memos;
   },
-  computed: {
-    filtro() {
-      return this.memos.filter((item) =>
-        item.destinatarioUsu.includes(this.usuario)
-      );
-    },
-  },
 
   mounted() {
     this.getMemos();
@@ -290,6 +316,12 @@ export default {
         .then((data) => {
           this.memos = data;
         });
+    },
+
+      AdjuntosList(id) {
+      this.actualizar = true;
+      this.memo = id;
+      console.log(this.memo);
     },
 
     filterUser() {
@@ -336,13 +368,7 @@ export default {
       }
     },
 
-    getTipo() {
-      fetch("https://localhost:5001/api/tipomemorandum")
-        .then((response) => response.json())
-        .then((data) => {
-          this.tipos = data;
-        });
-    },
+ 
   },
 
   setup() {

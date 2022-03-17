@@ -69,7 +69,7 @@
               <div class="card text-center" style="background-color: #e3f2fd">
                 <div class="card-stacked">
                   <div class="card-body">
-                    <router-link to="/bandeja/nuevo">
+                    <router-link to="/memorandum">
                       <div class="col-xs-6">
                         <i class="fas fa-file-alt fa-5x"></i>
                       </div>

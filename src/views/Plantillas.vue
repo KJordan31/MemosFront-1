@@ -17,6 +17,7 @@
                     name="message"
                     placeholder="Ingresar contenido de Plantilla"
                     rows="7"
+                    required
                     v-model="Agregar.plantillas"
                   ></textarea>
                 </div>

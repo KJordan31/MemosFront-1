@@ -84,7 +84,7 @@
 
           <div class="form-floating mb-3">
             <input
-              type="correo"
+              type="password"
               class="form-control"
               id="floatingUsuario"
               placeholder="Nombre"

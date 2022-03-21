@@ -1,6 +1,6 @@
 <template>
 
-<div class="">
+<div class="container">
     
 <div class="email-app">
     
@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="form-group mt-4">
-                    <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply"></textarea>
+                    <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply"> </textarea>
                 </div>
                 <br>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -119,6 +119,43 @@
 
 <script>
 export default {
+     data() {
+    return {
+      memos: [],
+      memo: {},
+      editando: null,
+      
+      
+    };
+  },
+
+  methods: {
+    
+    getMemos() {
+      fetch("https://localhost:5001/api/memorandum")
+        .then((response) => response.json())
+        .then((data) => {
+          this.memos = data;
+        });
+    },
+
+     mostrarMemo(memo) {
+      this.usuarioEditado = Object.assign({}, memo);
+      this.editando = memo.id;
+    },
+
+     mostrar(id) {
+      this.memo = id;
+      console.log(this.memo);
+    },
+
+ 
+  },
+
+  mounted() {
+    this.getMemos();
+   
+  },
 
 }
 </script>

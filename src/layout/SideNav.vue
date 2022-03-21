@@ -77,7 +77,7 @@
           <li class="sidebar-item">
             <router-link class="sidebar-link" to="/administracion/catalogo">
               <i class="fas fa-address-book" data-feather="square"></i>
-              <span class="align-middle">Catalogos</span>
+              <span class="align-middle">Catálogos</span>
             </router-link>
           </li>
 
@@ -90,7 +90,7 @@
           <li class="sidebar-item">
             <router-link class="sidebar-link" to="/memorandum">
               <i class="fas fa-file" data-feather="check-square"></i>
-              <span class="align-middle">Crear Memorandum</span>
+              <span class="align-middle">Crear Memorándum</span>
             </router-link>
           </li>
           <li class="sidebar-item">

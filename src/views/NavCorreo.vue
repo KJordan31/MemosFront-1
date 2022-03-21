@@ -1,10 +1,9 @@
 <template>
-  <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <nav class="container" style="background-color: #e3f2fd;">
  
 
 <h1 class="display-4">Memorandum</h1>
-    <div class="container-fluid">
-        <router-link to="/bandeja/nuevo" class="btn btn-outline-primary btn-block">Redactar</router-link>
+    <div class="container">
             <ul class="nav">
                 <li class="nav-item">
                     <router-link class="nav-link" to="/bandeja/entrada"><i class="fa fa-inbox"></i> Recibidos<span

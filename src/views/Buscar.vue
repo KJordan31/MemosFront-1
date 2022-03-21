@@ -188,22 +188,12 @@
               justify-content-between
             "
           >
-            <h6 class="m-0 font-weight-bold text-primary">Memorandums</h6>
+           
+            <DoughnutChart />
           </div>
           <!-- Card Body -->
           <div class="card-body">
-            <div class="chart-pie pt-4 pb-2"></div>
-            <div class="mt-4 text-center small">
-              <span class="mr-2">
-                <i class="fas fa-circle text-primary"></i> Informativos
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-success"></i> Llamados
-              </span>
-              <span class="mr-2">
-                <i class="fas fa-circle text-info"></i> Corrolativo
-              </span>
-            </div>
+             <h6 class="m-0 font-weight-bold text-primary">Memorandums</h6>
           </div>
         </div>
       </div>
@@ -237,16 +227,20 @@
 import DatePicker from "vue3-datepicker";
 import VueDrawingCanvas from "vue-drawing-canvas";
 import { BarChart, useBarChart } from "vue-chart-3";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted} from "vue";
+import DoughnutChart from "./DoughnutChart.vue"
+
 
 import axios from "axios";
 
-export default {
+export default  {
   name: "app",
   components: {
     DatePicker,
     VueDrawingCanvas,
     BarChart,
+    DoughnutChart
+    
   },
   data() {
     return {
@@ -379,6 +373,7 @@ export default {
     onMounted(async () => {
       const request = await fetch("https://localhost:5001/api/datos/usuarios");
       const response = await request.json();
+
 
       Labels.value = response.flatMap((x) => x.DestinatarioUsu);
       Total.value = response.flatMap((x) => x.Total);

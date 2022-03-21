@@ -1,11 +1,11 @@
 <template>
     <div class="row">
-    <h5>Administración de Catalogos</h5>
+    <h5>Administración de Catálogos</h5>
     <hr />
     <div class="form-group form-select-sm" aria-label=".form-select-sm example">
       <label for="selectCatalogos">Seleccione una opción</label>
       <select @change="changeCatalog" v-model="catalogoSeleccionado" class="form-control" id="selectCatalogos">
-        <option value="0" selected>Seleccione el Catalogo</option>
+        <option value="0" selected>Seleccione el Catálogo</option>
         <option value="Accion">Acciones</option>
         <option value="Estado">Estados</option>
         <option value="TipoMemorandum">Tipo de Memorandum</option>

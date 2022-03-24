@@ -7,7 +7,7 @@
         <h1 class="h3 mb-3"><strong>Nuevo</strong> Memorandum</h1>
         <form ref="form" @submit.prevent="sendEmail">
           <div class="form-row mb-3">
-            <label for="to" class="col-2 col-sm-1 col-form-label">De:</label>
+            <label for="to" class="col-2 col-sm-1 col-form-label">De: </label>
             <div class="col-10 col-sm-11">
               <input
                 type="email"
@@ -64,11 +64,12 @@
                 placeholder="Type subject"
                 autocomplete="off"
                 v-model="itemPorAgregar.asunto"
+        
                 required
               />
             </div>
           </div>
-          
+
           <div class="form-row mb-3">
             <label for="bcc" class="col-2 col-sm-1 col-form-label"
               >Adjuntos:</label
@@ -84,7 +85,6 @@
                 />
               </form>
             </div>
-            
           </div>
         </form>
         <div class="row">
@@ -145,8 +145,8 @@
               </button>
             </div>
 
-            <div class="form-row mb-3">
-                <button
+            <div class="form-row mt-3">
+              <button
                 type="submit"
                 class="btn btn-outline-success"
                 @click="AbrirPlantillas"
@@ -166,7 +166,7 @@
                 placeholder="Click here to reply"
                 v-model="itemPorAgregar.contenido"
                 required
-                @Plantilla="planti= $event"
+                @Plantilla="planti = $event"
               ></textarea>
             </div>
             <br />
@@ -200,13 +200,14 @@
 
 <script>
 import emailjs from "@emailjs/browser";
-import VistaPlantillas from "../views/VistaPlantilas.vue"
+import VistaPlantillas from "../views/VistaPlantilas.vue";
+import swal from "sweetalert";
 
 export default {
   name: "Memorandum",
-  props:['plantillasData '],
+ props:['idPlantilla'],
   components: {
-    VistaPlantillas  
+    VistaPlantillas,
   },
   data() {
     return {
@@ -216,8 +217,22 @@ export default {
       itemPorAgregar: {},
       memos: [],
       contenidos: [],
-      planti: ""
+      planti: "",
+      usuario: {},
+      plantillaMuestra: "",
     };
+  },
+  created: function () {
+    var data = JSON.parse(localStorage.getItem("user-info"));
+    if (data != null) {
+      this.usuario.id_Usuario = data.id_Usuario;
+      this.usuario.nombre = data.nombre;
+      this.usuario.apellidos = data.apellidos;
+      this.usuario.correo = data.correo;
+      this.usuario.super_Usuario = data.super_Usuario;
+    } else {
+      console.log("TODO: Regresar a pagina de LOGUEO");
+    }
   },
   methods: {
     async onFileSelected(event) {
@@ -226,8 +241,8 @@ export default {
       formData.append("my-file", file);
     },
 
-    AbrirPlantillas(){
-       this.$router.push("/seleccion");
+    AbrirPlantillas() {
+      this.$router.push("/seleccion");
     },
 
     sendEmail() {
@@ -248,7 +263,7 @@ export default {
         );
     },
 
-    async agregarMemo() {
+    async agregarMemorandum() {
       console.log("object");
       let newItem = {
         codigo: this.itemPorAgregar.codigo,
@@ -257,12 +272,9 @@ export default {
         asunto: this.itemPorAgregar.asunto,
         id_Tipo_Destinatario: this.itemPorAgregar.id_Tipo_Destinatario,
         id_Estado: this.itemPorAgregar.id_Estado,
-        id_Area: this.itemPorAgregar.id_Area,
-        adjuntos: this.itemPorAgregar.adjuntos,
-        id: this.itemPorAgregar.id,
-        contenido: this.itemPorAgregar.contenido,
-        usuario: this.itemPorAgregar.usuario,
+        id_Area: this.itemPorAgregar.id_Area,        
         destinatarioUsu: this.itemPorAgregar.destinatarioUsu,
+      
       };
       try {
         const request = await fetch(`https://localhost:5001/api/memorandum`, {
@@ -283,6 +295,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async agregarAdjuntos() {
 
       try {
         const request = await fetch(`https://localhost:5001/api/adjuntos`, {
@@ -300,6 +315,15 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async agregarContenido(){
+      let newItem = {
+           contenido: this.itemPorAgregar.contenido, 
+           id: this.itemPorAgregar.id_Contenido,
+           usuario: this.itemPorAgregar.usuario,
+      };
+
       try {
         const request = await fetch(`https://localhost:5001/api/contenido`, {
           method: "POST",
@@ -316,6 +340,37 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async agregarBitacora(){
+      let newItem = {
+          observacion: 'Memorandum en Proceso',
+          usuario: this.itemPorAgregar.usuario,
+          id_Memorandum: this.itemPorAgregar.id,
+          id_Estado: '1',
+          id_Accion: '2'
+      };
+       try {
+        const request = await fetch(`https://localhost:5001/api/bitacora`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newItem)
+        })
+
+        if (request.ok) {
+          this.$emit('update');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    agregarMemo(){
+          this.agregarMemorandum();
+          this.agregarContenido();
+          this.agregarBitacora();
     },
 
     getTipo() {

@@ -3,6 +3,7 @@
   <div class="col-sm-6" v-for="plantilla in plantillas" :key="plantilla">
     <div class="card" >
       <div class="card-body" >
+        <h1 class="h3 mb-3"><strong>Plantilla</strong> {{plantilla.id}}</h1>
         <p class="card-text">{{plantilla.plantillas}}</p>
 
          <div
@@ -12,7 +13,7 @@
               <button
                 type="submit"
                 class="btn btn-outline-primary"
-                @click="Cargar(plantilla)"              >
+                  @click="modificarPlanti(plantilla)"             >
                 <span class="icon is-small">
                   <i class="fas fa-check"></i>
                 </span>
@@ -31,7 +32,8 @@
 import Memorandum from "../views/Memorandum.vue"
 
 export default {
-  props:['idPlantilla'],
+  name: "Plantilla",
+  props:['plantilla'],
   components:{
       Memorandum 
   },
@@ -44,6 +46,24 @@ data(){
 },
 
 methods:{
+ cargar(id){
+            this.$emit('Plantilla', id)
+        },
+
+
+      editarPlanti(plantilla) {
+      this.usuarioEditado = Object.assign({}, plantilla);
+      this.editando = plantilla.id;
+    },
+
+    modificarPlanti(id) {
+      this.actualizar = true;
+      this.plantilla = id;
+      console.log(this.plantilla.plantillas);
+       this.$router.push("/memorandum");
+      
+    },
+
    async getPlantilla() {
     const request = await fetch("https://localhost:5001/api/plantillas");
       const response = await request.json();  
@@ -52,10 +72,6 @@ methods:{
       
     },
 
-    Cargar(id)
-    {
-          this.plantilla = id
-    }
 },
 
 mounted(){

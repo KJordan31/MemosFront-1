@@ -99,6 +99,12 @@
               <span class="align-middle">Plantillas</span>
             </router-link>
           </li>
+            <li class="sidebar-item">
+            <router-link class="sidebar-link" to="/seguimiento">
+              <i class="fas fa-list" data-feather="check-square"></i>
+              <span class="align-middle">Seguimiento</span>
+            </router-link>
+          </li>
 
           
         </div>

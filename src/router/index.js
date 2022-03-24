@@ -29,22 +29,22 @@ const routes = [
         path: '/bandeja',
         name: 'NavCorreo',
         component: () => import(/* webpackChunkName: "bandeja" */ '../views/NavCorreo.vue'),
-        children : [
-          {
-            path: 'nuevo',
-            name: 'NuevoCorreo',
-            component: () => import( '../views/NuevoCorreo.vue'),
-          },
+        children : [       
           {
             path: 'entrada',
             name: 'Bandeja',
             component: () => import( '../views/Bandeja.vue'),
           },
           {
-            path: 'correo',
+            path: 'correo/:id',
             name: 'Correo',
             component: () => import( '../views/Correo.vue'),
-          }
+          },
+          {
+            path: 'correo/nuevo/:id',
+            name: 'NuevoCorreo',
+            component: () => import( '../views/NuevoCorreo.vue'),
+          },
         ]
       },
       {
@@ -82,6 +82,13 @@ const routes = [
         path: '/seleccion',
         name: 'VistaPlantilas',
         component: () => import(/* webpackChunkName: "about" */ '../views/VistaPlantilas.vue'),
+    
+       
+      },
+      {
+        path: '/seguimiento',
+        name: 'Workflow',
+        component: () => import(/* webpackChunkName: "about" */ '../views/Workflow.vue'),
     
        
       },

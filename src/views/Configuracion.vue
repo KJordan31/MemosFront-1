@@ -140,6 +140,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import swal from "sweetalert";
 
 export default {
   el: "#myform",

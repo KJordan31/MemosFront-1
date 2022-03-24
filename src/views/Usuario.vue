@@ -407,7 +407,7 @@
         <div class="modal-header">
           <div class="card card-plain" style="width: 30rem;">
             <div class="card-header pb-0 text-left">
-              <h3 class="modal-title text-info text-gradient">Edición</h3>
+              <h3 class="modal-title text-info text-gradient">Edición</h3>               
               <p class="mb-0">Modificacion de Usuario</p>
               
             </div>
@@ -592,7 +592,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
-        swal("Error!", "Usuario no pudo ser ModificadO!", "error");
+        swal("Error!", "Usuario no pudo ser Modificado!", "error");
       }
     },
 

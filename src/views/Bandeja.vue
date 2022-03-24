@@ -4,14 +4,14 @@
       <main class="inbox">
         <router-view />
         <div class="toolbar">
-          <div class="btn-group">
+          
             <h1 class="h3 mb-3"><strong>Bandeja</strong> Entrada</h1>
-          </div>
+          
         </div>
 
-        <ul class="messages" v-for="memo in memos " :key="memo.codigo">  
-          <li class="message unread" >
-            <router-link to="/bandeja/correo">
+        <ul class="messages" v-for="memo in memos" :key="memo.codigo">
+          <li class="message unread">
+            <router-link :to="`correo/${memo.id}`">
               <div class="actions">
                 <span class="action"><i class="fa fa-square-o"></i></span>
                 <span class="action"><i class="fa fa-star-o"></i></span>
@@ -26,16 +26,12 @@
                 {{ memo.asunto }}
               </div>
               <li>
-              <div class="description" >
-                {{memo.contenido.contenido}}
-              </div>
+                <div class="description">
+                  {{ memo.contenido.contenido }}
+                </div>
               </li>
             </router-link>
           </li>
-          
-          
-         
-         
         </ul>
       </main>
     </div>
@@ -44,16 +40,16 @@
 
 <script>
 export default {
+  props: ["idMemo"],
   data() {
     return {
       memos: [],
-      
-      
+      memo: {},
+      select: null,
     };
   },
 
   methods: {
-    
     getMemos() {
       fetch("https://localhost:5001/api/memorandum")
         .then((response) => response.json())
@@ -62,12 +58,18 @@ export default {
         });
     },
 
- 
+    Selectmemo(memo) {
+      this.memoSelect = Object.assign({}, memo);
+      this.select = memo.id;
+    },
+
+    Seleccionar(id) {
+      this.memo = id;
+    },
   },
 
   mounted() {
     this.getMemos();
-   
   },
 };
 </script>

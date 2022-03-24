@@ -98,7 +98,7 @@
                       <button
                         @click="login"
                         type="submit"
-                        class="btn btn-lg btn-primary"
+                        class="btn btn-primary btn-rounded"
                       >
                         login
                       </button>

@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand navbar-light navbar-bg">
-    <a class="sidebar-toggle js-sidebar-toggle">
+    <a class="sidebar-toggle js-sidebar-toggle" @click="mostrar(SideNav)">
       <i class="hamburger align-self-center"></i>
     </a>
 
@@ -50,6 +50,10 @@
       </ul>
     </div>
   </nav>
+
+  <!-- sidenav -->
+  
+  
 </template>
 
 <script>
@@ -60,6 +64,7 @@ export default {
         nombre: " ",
         apellidos: " ",
       },
+      ver: false
     };
   },
   created: function () {
@@ -71,6 +76,10 @@ export default {
       console.log("TODO: Regresar a pagina de LOGUEO");
     }
   },
-  methods: {},
+  methods: {
+    mostrar(SideNav){
+       this.ver = true
+    }
+  },
 };
 </script>

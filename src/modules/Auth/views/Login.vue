@@ -5,9 +5,9 @@
         <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
           <div class="d-table-cell align-middle">
             <div class="card">
-              <div class="card-body">
-                <div class="m-sm-4">
-                  <div class="text-center">
+              <div class="card-body py-5 px-md-5">
+                <div class="row d-flex justify-content-center">
+                  <div class="col-lg-8">
                     <img
                       src="../Assets/Img/ihtt.png"
                       id="icon"
@@ -17,6 +17,7 @@
                       class=""
                     />
                   </div>
+                  
                   <form @submit.prevent="login">
                     <div class="container">
                       <div class="mb-3">
@@ -153,6 +154,17 @@ export default {
         });
     },
 
+    computed:{
+      email(){
+        var pattern="(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[!#$%^&*]).{10,16}"
+        if(pattern.test(this.contraseña)){
+          return false ;
+        }else{
+          return true;
+        }
+      }
+    },
+
     mounted() {
       this.getLogin();
       let user = localStorage.getItem("user-info");
@@ -235,7 +247,7 @@ export default {
 <style Lang="scss" scoped>
 @import url("https://use.fontawesome.com/releases/v5.7.2/css/all.css");
 body {
-  background-color: darkslategrey;
+  background-color: #5dc1b9;
 }
 
 .strength {

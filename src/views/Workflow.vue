@@ -26,10 +26,11 @@
         <td>
           <span
             :class="
-              bit.estado.descripcion
+              bit.estado.descripcion == 'Aceptado'
                 ? 'badge badge-success rounded-pill d-inline'
                 : 'badge badge-danger rounded-pill d-inline'
             "
+            id="color"
             >{{ bit.estado.descripcion }}</span
           >
         </td>
@@ -64,7 +65,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="staticBackdropLabel">
-            Seguimiento del Memorandum 
+            Seguimiento del Memorandum
           </h5>
           <button
             type="button"
@@ -93,8 +94,11 @@
                 <td>
                   <span
                     :class="
-                      item.Estado
+                      item.Estado.Descripcion == 'Aceptado'
                         ? 'badge badge-success rounded-pill d-inline'
+                        : 'badge badge-danger rounded-pill d-inline' ==
+                          'En Proceso'
+                        ? 'badge badge-warning rounded-pill d-inline'
                         : 'badge badge-danger rounded-pill d-inline'
                     "
                     >{{ item.Estado.Descripcion }}</span
@@ -112,16 +116,47 @@
       </div>
     </div>
   </div>
+
+  <div class="card-body">
+    <div class="col-xl-4 col-lg-5">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <h6 class="m-0 font-weight-bold text-primary">Estados</h6>
+        </div>
+        <!-- Card Header - Dropdown -->
+        <div
+          class="
+            card-header
+            py-3
+            d-flex
+            flex-row
+            align-items-center
+            justify-content-between
+          "
+        >
+          <PieChart />
+        </div>
+        <!-- Card Body -->
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import PieChart from "./PieChart.vue";
+
 export default {
+  name: "app",
+  components: {
+    PieChart,
+  },
   data() {
     return {
       bitacoras: [],
       bitacora: [],
       ver: false,
-      filtro1: ""
+      filtro1: "",
+      bit: {},
     };
   },
 
@@ -133,9 +168,6 @@ export default {
           this.bitacoras = data;
         });
     },
-
-
-
 
     getItem(idmemo) {
       fetch(`https://localhost:5001/api/work/${idmemo}`)

@@ -64,7 +64,6 @@
                 placeholder="Type subject"
                 autocomplete="off"
                 v-model="itemPorAgregar.asunto"
-        
                 required
               />
             </div>
@@ -75,15 +74,10 @@
               >Adjuntos:</label
             >
             <div class="col-10 col-sm-11">
-              <form id="form1" name="form1">
-                <i class="fa fa-folder-open-o" aria-hidden="true"></i>&nbsp;
-                <input
-                  type="file"
-                  accept=""
-                  @change="onFileSelected"
-                  name="myfile"
-                />
-              </form>
+              <label >
+                    <i class="fa fa-folder-open-o" aria-hidden="true"></i>&nbsp;Seleccionar un archivo
+                    <input type="file" accept=".pdf" @change="onFileSelected" name="myfile">
+                </label>
             </div>
           </div>
         </form>
@@ -145,16 +139,20 @@
               </button>
             </div>
 
-            <div class="form-row mt-3">
+            <div
+              class="form-row mt-3 col-sm-6"
+              v-for="plantilla in plantillas"
+              :key="plantilla"
+            >
               <button
                 type="submit"
                 class="btn btn-outline-success"
-                @click="AbrirPlantillas"
+                @click="modificarUsuario(plantilla)"
               >
                 <span class="icon is-small">
                   <i class="fas fa-clipboard"></i>
                 </span>
-                Plantillas
+                Plantilla {{ plantilla.id }}
               </button>
             </div>
             <div class="form-group mt-4">
@@ -164,9 +162,8 @@
                 name="body"
                 rows="12"
                 placeholder="Click here to reply"
-                v-model="itemPorAgregar.contenido"
+                v-model="plantilla.plantillas"
                 required
-                @Plantilla="planti = $event"
               ></textarea>
             </div>
             <br />
@@ -177,7 +174,7 @@
               <button
                 type="submit"
                 class="btn btn-outline-success"
-                @click="agregarMemo"
+                @click="agregarMemorandum"
               >
                 <span class="icon is-small">
                   <i class="fas fa-paper-plane"></i>
@@ -205,7 +202,7 @@ import swal from "sweetalert";
 
 export default {
   name: "Memorandum",
- props:['idPlantilla'],
+  props: ["idPlantilla"],
   components: {
     VistaPlantillas,
   },
@@ -219,7 +216,8 @@ export default {
       contenidos: [],
       planti: "",
       usuario: {},
-      plantillaMuestra: "",
+      plantillas: [],
+      plantilla: "",
     };
   },
   created: function () {
@@ -235,15 +233,31 @@ export default {
     }
   },
   methods: {
+
+    onFileSelected (event) {
+               const file = event.target.files[0];
+               const formData = new FormData();
+               formData.append("my-file", file);
+               Vue.http.post(`server-url`, formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+               })
+                .then(res => {
+                    //todo ok
+                },
+                error => {
+                    //todo mal :P
+                })
+            },
+
     async onFileSelected(event) {
       const file = event.target.files[0];
       const formData = new FormData();
       formData.append("my-file", file);
     },
 
-    AbrirPlantillas() {
-      this.$router.push("/seleccion");
-    },
+   
 
     sendEmail() {
       emailjs
@@ -266,15 +280,14 @@ export default {
     async agregarMemorandum() {
       console.log("object");
       let newItem = {
-        codigo: this.itemPorAgregar.codigo,
+        codigo: "MEM-09",
         id_tipo: this.itemPorAgregar.id_tipo,
         usuario: this.itemPorAgregar.usuario,
         asunto: this.itemPorAgregar.asunto,
-        id_Tipo_Destinatario: this.itemPorAgregar.id_Tipo_Destinatario,
-        id_Estado: this.itemPorAgregar.id_Estado,
-        id_Area: this.itemPorAgregar.id_Area,        
+        id_Tipo_Destinatario: "1",
+        id_Estado: "2",
+        id_Area: "1",
         destinatarioUsu: this.itemPorAgregar.destinatarioUsu,
-      
       };
       try {
         const request = await fetch(`https://localhost:5001/api/memorandum`, {
@@ -285,7 +298,22 @@ export default {
           body: JSON.stringify(newItem),
         });
 
+        
+
+        const idmemo = await request.json();
+        
+
         if (request.ok) {
+
+          //aqui llamar las otras funciones.... 
+          this.id = idmemo;
+          this.id_Memorandum = idmemo
+          
+
+          this.agregarContenido(idmemo);
+          this.agregarBitacora(idmemo);
+
+
           this.$emit("update");
           console.log(request);
           swal("Bien!", "Memorandum enviado!", "success");
@@ -298,7 +326,6 @@ export default {
     },
 
     async agregarAdjuntos() {
-
       try {
         const request = await fetch(`https://localhost:5001/api/adjuntos`, {
           method: "POST",
@@ -317,11 +344,11 @@ export default {
       }
     },
 
-    async agregarContenido(){
+    async agregarContenido(id) {
       let newItem = {
-           contenido: this.itemPorAgregar.contenido, 
-           id: this.itemPorAgregar.id_Contenido,
-           usuario: this.itemPorAgregar.usuario,
+        contenido: this.plantilla.plantillas,
+        id: id,
+        usuario: this.itemPorAgregar.usuario,
       };
 
       try {
@@ -342,36 +369,31 @@ export default {
       }
     },
 
-    async agregarBitacora(){
+    async agregarBitacora(id) {
       let newItem = {
-          observacion: 'Memorandum en Proceso',
-          usuario: this.itemPorAgregar.usuario,
-          id_Memorandum: this.itemPorAgregar.id,
-          id_Estado: '1',
-          id_Accion: '2'
+        observacion: "Memorandum en Proceso",
+        usuario: this.itemPorAgregar.usuario,
+        id_Memorandum: id,
+        id_Estado: "1",
+        id_Accion: "2",
       };
-       try {
+      try {
         const request = await fetch(`https://localhost:5001/api/bitacora`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(newItem)
-        })
+          body: JSON.stringify(newItem),
+        });
 
         if (request.ok) {
-          this.$emit('update');
+          this.$emit("update");
         }
       } catch (error) {
         console.log(error);
       }
     },
 
-    agregarMemo(){
-          this.agregarMemorandum();
-          this.agregarContenido();
-          this.agregarBitacora();
-    },
 
     getTipo() {
       fetch("https://localhost:5001/api/tipomemorandum")
@@ -391,10 +413,29 @@ export default {
           this.usuarios = data;
         });
     },
+
+    async getPlantilla() {
+      const request = await fetch(`https://localhost:5001/api/plantillas`);
+      const response = await request.json();
+
+      this.plantillas = response;
+    },
+
+    editarUsuario(plantilla) {
+      this.usuarioEditado = Object.assign({}, plantilla);
+      this.editando = plantilla.id;
+    },
+
+    modificarUsuario(id) {
+      this.actualizar = true;
+      this.plantilla = id;
+      console.log(this.plantilla);
+    },
   },
   mounted() {
     this.getTipo();
     this.getUsuarios();
+    this.getPlantilla();
   },
 
   //     methods:

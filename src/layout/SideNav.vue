@@ -1,5 +1,5 @@
 <template>
-  <nav id="sidebar" class="sidebar js-sidebar">
+  <div id="sidebar" class="sidebar js-sidebar" >
     <div class="sidebar-content js-simplebar">
       <router-link to="/" class="sidebar-brand">
         <span class="align-middle">Sistema Memorandum</span>
@@ -21,8 +21,6 @@
             </router-link>
           </li>
 
-          
-
           <li class="sidebar-item">
             <router-link class="sidebar-link" to="/configuracion">
               <i class="fas fa-user-cog"></i>
@@ -38,7 +36,7 @@
         </div>
 
         <div v-else>
-           <li class="sidebar-item active">
+          <li class="sidebar-item active">
             <router-link class="sidebar-link" to="/">
               <i class="fas fa-home align-middle"></i>
               <span class="align-middle">Inicio</span>
@@ -71,7 +69,7 @@
               <span class="align-middle">Salir</span>
             </router-link>
           </li>
-          
+
           <li class="sidebar-header">Administración</li>
 
           <li class="sidebar-item">
@@ -99,18 +97,16 @@
               <span class="align-middle">Plantillas</span>
             </router-link>
           </li>
-            <li class="sidebar-item">
+          <li class="sidebar-item">
             <router-link class="sidebar-link" to="/seguimiento">
               <i class="fas fa-list" data-feather="check-square"></i>
               <span class="align-middle">Seguimiento</span>
             </router-link>
           </li>
-
-          
         </div>
       </ul>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -120,8 +116,9 @@ export default {
     return {
       elementoActual: 1,
       usuario: {
-        super_Usuario: true,
+        super_Usuario: false,
       },
+      drawer: true,
     };
   },
 

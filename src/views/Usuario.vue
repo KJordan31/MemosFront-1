@@ -603,7 +603,7 @@ export default {
         apellidos: this.itemPorAgregar.apellidos,
         correo: this.itemPorAgregar.correo,
         contraseña: this.itemPorAgregar.contraseña,
-        super_Usuario: this.itemPorAgregar.super_Usuario,
+        
       };
 
       try {

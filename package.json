@@ -40,6 +40,7 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@nuxtjs/vuetify": "^1.12.3",
     "@types/bootstrap": "^5.1.9",
     "@types/cors": "^2.8.12",
     "@vue/cli-plugin-babel": "~4.5.0",

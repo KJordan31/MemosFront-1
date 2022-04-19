@@ -98,7 +98,7 @@
                         <th>Asunto</th>
                         <th>Fecha</th>
                         <th>Usuario</th>
-                        <th>Adjuntos</th>
+                        <th>Detalles</th>
                       </tr>
                       <tr v-for="memo in memos" :key="memo">
                         <td>{{ memo.codigo }}</td>
@@ -152,9 +152,9 @@
                         >
                           Close
                         </button>
-                        <button type="button" class="btn btn-primary">
+                        <!-- <button type="button" class="btn btn-primary">
                           Save changes
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </div>
@@ -267,8 +267,6 @@ import VueDrawingCanvas from "vue-drawing-canvas";
 import { BarChart, useBarChart } from "vue-chart-3";
 import { ref, computed, onMounted } from "vue";
 import DoughnutChart from "./DoughnutChart.vue";
-
-import axios from "axios";
 
 export default {
   name: "app",

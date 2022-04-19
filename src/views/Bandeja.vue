@@ -51,7 +51,7 @@ export default {
 
   methods: {
     getMemos() {
-      fetch("https://localhost:5001/api/memorandum")
+      fetch(`https://localhost:5001/api/memorandum`)
         .then((response) => response.json())
         .then((data) => {
           this.memos = data;

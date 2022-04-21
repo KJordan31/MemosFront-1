@@ -75,6 +75,13 @@
                     required
                     v-model="usuario.contraseña"
                   />
+                  <div v-if="enviado && !$v.contraseña.requered" class="mensajeError">
+                    Debe escribir una contraseña
+                  </div>
+                    <div v-if="enviado && !$v.contraseña.minLength" class="mensajeError">
+                    La contraseña debe contener minimo 6 caracteres
+                  </div>
+
 
                   <label for="floatingInput">Contraseña</label>
                 </div>
@@ -139,7 +146,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { minLength, required, sameAs } from "vuelidate/lib/validators";
 import swal from "sweetalert";
 
 export default {
@@ -152,7 +159,7 @@ export default {
       usuario: {  
       },
       antigua: "",
-      contra: "",
+      contraseña: "",
       confirmarContraseña: "",
       editando: null,
     };
@@ -160,9 +167,8 @@ export default {
 
   validations() {
     return {
-      contraseña: { required },
-      antigua: { required },
-      confirmarContraseña: { required },
+      contraseña: { required, minLength: minLength(6) },
+      confirmarContraseña: { required, sameAsContraseña: sameAs("contraseña") },
     };
   },
 
@@ -181,6 +187,18 @@ export default {
       console.log("TODO: Regresar a pagina de LOGUEO");
     }
   },
+
+      computed:{
+      validaPassword(){
+        var pattern="(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[!#$%^&*]).{10,16}";
+        if(pattern.test(this.usuario.contraseña)){
+          return false ;
+        }else{
+          return true;
+        }
+      }
+    },
+
   methods: {
     Cancelar() {
       this.usuario.contraseña = "";

@@ -95,32 +95,17 @@
             <label for="floatingInput">Contraseña</label>
           </div>
 
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="exampleRadios"
-              id="True"
-              value="true"
-              checked
-              v-model="itemPorAgregar.super_Usuario"
-            />
-            <label class="form-check-label" for="exampleRadios1">
-              Gerencia
-            </label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="exampleRadios"
-              id="False"
-              value="false"
-              v-model="itemPorAgregar.super_Usuario"
-            />
-            <label class="form-check-label" for="exampleRadios2">
-              Empleado
-            </label>
+
+          <div class="form-row mb-3">
+            <label for="bcc" class="col-2 col-sm-1 col-form-label">Usuario:</label>
+            <div class="col-10 col-sm-11">
+              <select class="form-select form-select-sm" aria-label=".form-select-sm example"   v-model="itemPorAgregar.tipo">
+  <option selected></option>
+  <option value="Super">Super</option>
+  <option value="RRHH">RRHH</option>
+  <option value="Empleado">Empleado</option>
+</select>
+            </div>
           </div>
           <div class="col-12">
             <button
@@ -234,13 +219,13 @@
                 <td>
                   <span
                     :class="[
-                      usuario.super_Usuario
+                      usuario.tipo == 'Super'
                         ? 'p-3 mb-2 bg-success bg-gradient text-white'
                         : 'p-3 mb-2 bg-primary bg-gradient text-white',
                       'badge badge-sm',
                     ]"
                   >
-                    {{ usuario.super_Usuario ? "Gerencia" : "Empleado" }}
+                    {{ usuario.tipo }}
                   </span>
                 </td>
                 <td class="align-middle text-center">
@@ -355,13 +340,13 @@
                 <td>
                   <span
                     :class="[
-                      usuario.super_Usuario
+                      usuario.tipo == 'Super'
                         ? 'p-3 mb-2 bg-success bg-gradient text-white'
                         : 'p-3 mb-2 bg-primary bg-gradient text-white',
                       'badge badge-sm',
                     ]"
                   >
-                    {{ usuario.super_Usuario ? "Gerencia" : "Empleado" }}
+                    {{ usuario.tipo}}
                   </span>
                 </td>
                 <td class="align-middle text-center">
@@ -413,7 +398,7 @@
             </div>
             <div class="modal-body">
               <form role="form text-left" @submit.prevent="Editar">
-                <label>Nombre</label>
+                <label for="bcc" class="col-8 col-sm-2 col-form-label">Nombre</label>
                 <div class="input-group mb-3">
                   <input
                     type="text"
@@ -422,7 +407,7 @@
                     v-model="usuario.nombre"
                   />
                 </div>
-                <label>Apellido</label>
+                <label for="bcc" class="col-8 col-sm-2 col-form-label">Apellido</label>
                 <div class="input-group mb-3">
                   <input
                     type="text"
@@ -431,7 +416,7 @@
                     v-model="usuario.apellidos"
                   />
                 </div>
-                <label>Correo</label>
+                <label for="bcc" class="col-8 col-sm-2 col-form-label">Correo</label>
                 <div class="input-group mb-3">
                   <input
                     type="text"
@@ -440,7 +425,7 @@
                     v-model="usuario.correo"
                   />
                 </div>
-                <label>Contraseña</label>
+                <label for="bcc" class="col-8 col-sm-3 col-form-label">Contraseña</label>
                 <div class="input-group mb-3">
                   <input
                     type="text"
@@ -450,17 +435,17 @@
                   />
                 </div>
 
-                <div class="form-check form-switch">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="rememberMe"
-                    v-model="usuario.super_Usuario"
-                  />
-                  <label class="form-check-label" for="rememberMe">{{
-                    usuario.super_Usuario ? "Gerencia" : "Empleado"
-                  }}</label>
-                </div>
+              <div class="form-row mb-3">
+            <label for="bcc" class="col-8 col-sm-2 col-form-label">Usuario:</label>
+            <div class="col-10 col-sm-11">
+              <select class="form-select form-select-sm mb-5" aria-label=".form-select-sm example" v-model="usuario.tipo">
+  <option selected ></option>
+  <option value="Super">Super</option>
+  <option value="RRHH">RRHH</option>
+  <option value="Empleado">Empleado</option>
+</select>
+            </div>
+          </div>
                 <div
                   v-if="actualizado"
                   class="alert alert-success alert-dismissible fade show"
@@ -603,6 +588,7 @@ export default {
         apellidos: this.itemPorAgregar.apellidos,
         correo: this.itemPorAgregar.correo,
         contraseña: this.itemPorAgregar.contraseña,
+        tipo: this.itemPorAgregar.tipo
         
       };
 

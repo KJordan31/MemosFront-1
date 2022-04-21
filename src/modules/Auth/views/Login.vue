@@ -129,6 +129,7 @@ export default {
       apellidos: "",
       show: false,
       error: false,
+      error_msg: "",
 
       usuario: [],
     };
@@ -143,16 +144,21 @@ export default {
         apellidos: this.apellidos,
       };
       
+      try{
       const response = await axios
         .post(`https://localhost:5001/api/usuario/login`, json)
         .then((data) => {localStorage.setItem("user-info", JSON.stringify(data.data));
           if (data.status == 200) {
             this.$router.push("/");
-          } else {
-            swal("Error!", "Usuario y/o Contraseña incorrecto!", "error");
-          }
-        });
+            console.log(data);
+          } 
+          });
+      }catch (error) {
+console.log(error);
+ swal("Error!", "Usuario y/o contraseña Incorrectas!", "error");
+      }
     },
+ 
 
     computed:{
       email(){

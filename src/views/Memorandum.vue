@@ -41,11 +41,12 @@
                 id="selectTipo"
                 required
               >
-                <option value="0" selected></option>
+                <option value="tipo.id" selected></option>
                 <option
                   v-for="tipo in tipos"
                   :key="tipo.Id"
                   v-bind:value="tipo.id"
+              
                 >
                   {{ tipo.descripcion }}
                 </option>
@@ -280,13 +281,13 @@ export default {
     async agregarMemorandum() {
       console.log("object");
       let newItem = {
-        codigo: "MEM-09",
+        codigo: "MEM-10",
         id_tipo: this.itemPorAgregar.id_tipo,
         usuario: this.itemPorAgregar.usuario,
         asunto: this.itemPorAgregar.asunto,
         id_Tipo_Destinatario: "1",
-        id_Estado: "2",
-        id_Area: "1",
+        id_Estado: "1",
+        id_Area: "2",
         destinatarioUsu: this.itemPorAgregar.destinatarioUsu,
       };
       try {
